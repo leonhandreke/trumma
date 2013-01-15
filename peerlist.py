@@ -33,7 +33,8 @@ class LocallyAvailableFile(AvailableFile):
 
     def calculate_sha_hash(self):
         h = hashlib.sha1()
-        f = open(self.get_local_path())
+        # open the file in binary mode
+        f = open(self.local_path, "rb")
         while True:
             data = f.read(4096)
             if not data:
