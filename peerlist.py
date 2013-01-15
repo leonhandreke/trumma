@@ -1,33 +1,19 @@
 import hashlib
+import datetime
 
 import settings
 
-"""
-class PeerList(list):
-    SELF_KEY = 'SELF'
-
-    def _get_self(self):
-        return self[self.SELF_KEY]
-
-    def _set_self(self, value):
-        self[self.SELF_KEY] = value
-
-    self = property(_get_self, _set_self)
-
-    def __init__(self, *args, **kwargs):
-        super(PeerList, self).__init__(*args, **kwargs)
-        self[self.SELF_KEY] = []
-"""
 class Peer(object):
     def __init__(self, address, tcp_port, alias, *args, **kwargs):
         super(Peer, self).__init__(*args, **kwargs)
         self.address = address
         self.tcp_port = tcp_port
         self.alias = alias
+        self.last_seen = datetime.datetime.now()
         self.files = []
 
-    def __unicode__(self):
-        return self.alias + "(" + self.address + ")"
+    def __str__(self):
+        return self.alias + " (" + self.address + ")"
 
 
 class AvailableFile(object):
@@ -39,10 +25,13 @@ class AvailableFile(object):
         self.ttl = ttl
         self.meta = meta
 
-    def get_local_path(self):
-        return os.path.join(settings.DOWNLOAD_PATH, self.name)
 
-    def recalculate_sha_hash(self):
+class LocallyAvailableFile(AvailableFile):
+    def __init__(self, local_path, *args, **kwargs):
+        super(LocallyAvailableFile, self).__init__(*args, **kwargs)
+        self.local_path = local_path
+
+    def calculate_sha_hash(self):
         h = hashlib.sha1()
         f = open(self.get_local_path())
         while True:

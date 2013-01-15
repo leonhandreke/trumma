@@ -11,7 +11,7 @@ class UserInterface(Thread):
             try:
                 cmd = input("> ")
                 if cmd == "listpeers":
-                    map(print, self._peerlist)
+                    print(*self._peerlist, sep="\n")
                 else:
                     print("No such command")
             except EOFError:
