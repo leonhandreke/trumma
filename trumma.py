@@ -7,7 +7,7 @@ import os
 from datagram import DatagramReceiver
 from connection import ConnectionListener
 from ui import UserInterface
-from peerlist import Peer, AvailableFile
+from peerlist import Peer, LocallyAvailableFile
 import settings
 
 self_peer = Peer("127.0.0.1", settings.TCP_PORT, "trumma on " + socket.gethostname())
@@ -15,11 +15,16 @@ peerlist = [self_peer, ]
 
 # build own file list
 for f in os.listdir(settings.DOWNLOAD_PATH):
-    if os.path.isfile(f):
-        self_peer.files.append(AvailableFile(None, os.path.getsize(f), f))
+    file_path = os.path.join(settings.DOWNLOAD_PATH, f)
+    if os.path.isfile(file_path):
+        self_peer.files.append(
+                LocallyAvailableFile(file_path,
+                    None,
+                    os.path.getsize(file_path),
+                    f))
 
 for f in self_peer.files:
-    f.recalculate_sha_hash()
+    f.sha_hash = f.calculate_sha_hash()
 
 # Instantiate the Queue to hold all received messages
 message_receive_queue = Queue()
