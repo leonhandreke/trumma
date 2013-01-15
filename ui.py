@@ -39,6 +39,8 @@ class UserInterface(Thread):
                     print("get file " + fileid + " " + path)
                 elif cmd.startswith("find peers "):
                     print("get filelist")
+                elif cmd == "exit" or cmd == "quit" or cmd =="q":
+                    break
                 else:
                     print("No such command")
             except EOFError:
