@@ -27,7 +27,7 @@ message_receive_queue = Queue()
 # Set up the IPv4 multicast listener socket
 ipv4_udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
 ipv4_udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-ipv4_udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
+#ipv4_udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
 ipv4_udp_socket.setsockopt(socket.IPPROTO_IP,
         socket.IP_ADD_MEMBERSHIP,
         socket.inet_aton(settings.IPV4_MULTICAST_GROUP) + struct.pack('=I', socket.INADDR_ANY))
