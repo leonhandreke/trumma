@@ -19,7 +19,7 @@ def run_ui():
             # split again, we may have changed cmd
             scmd = cmd.split();
 
-           if (cmd == "list peers"):
+            if (cmd == "list peers"):
                 print(*self._peerlist, sep="\n")
             elif cmd.startswith("list files ") and len(scmd) == 3:  
                 print(filter(lambda s: s.address==scmd[2], self._peerlist))
