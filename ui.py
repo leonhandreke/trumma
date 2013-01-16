@@ -4,45 +4,36 @@ import readline
 
 from gevent import monkey
 
-monkey.patch_sys()
+    def run_ui():
+        while True:
+            try:
+                cmd = raw_input("> ")
+                
+                # split command
+                scmd = cmd.split();
+                
+                # some alias commands first:
+                if cmd == "list my files": cmd = "list files 127.0.0.1"
+                elif cmd == "listpeers": cmd = "list peers"
+                elif (scmd[0] == "refresh" or scmd[0] == "update") and scmd[1] == "filelist" and len(scmd) == 3: cmd = "get filelist " + scmd[2]
+                # split again, we may have changed cmd
+                scmd = cmd.split();
 
-def run_ui():
-    while True:
-        try:
-            cmd = raw_input("> ")
-        # commands needed:
-        # * list peers
-        # * list files $peer 
-        # * get filelist $peer
-        # * get file $SHA (tab completion?) $path (put in ~ if $path not given)
-        # * find peers
-
-
-        # $peer identified by nick if unique, else ip
-
-        # alias commands:
-        # list my files --> list files 127.0.0.1 
-        # refresh filelist $peer --> get filelist $peer
-        # update filelist §peer --> get filelist $peer
-            if (cmd == "listpeers") or (cmd == "list peers"):
-            #    print ("listpeers")
-                print(*self._peerlist, sep="\n")
-            elif cmd.startswith("list files "):
-                peer = cmd.split()[2]
-                print("list files " + peer)
-            elif cmd.startswith("get filelist "):
-                peer = cmd.split()[2]
-                print("get filelist " + peer)
-            elif cmd.startswith("get file "):
-                fileid = cmd.split()[2]
-                path = cmd.split()[3]
-                print("get file " + fileid + " " + path)
-            elif cmd.startswith("find peers "):
-                print("get filelist")
-            elif cmd == "exit" or cmd == "quit" or cmd =="q":
-                break
-            else:
-                print("No such command")
-        except EOFError:
-            break
+               if (cmd == "list peers"):
+                    print(*self._peerlist, sep="\n")
+                elif cmd.startswith("list files ") and len(scmd) == 3:  
+                    print(filter(lambda s: s.address==scmd[2], self._peerlist))
+                elif cmd.startswith("get filelist ") and len(scmd) == 3:
+                    print("get filelist " + scmd[2])
+                elif cmd.startswith("get file ") and len(scmd) == 4:
+                    print("get file " + scmd[2] + " " + scmd[3])
+                elif cmd.startswith("find peers"):
+                    print("find peers")
+                elif cmd == "exit" or cmd == "quit" or cmd =="q":
+                    break
+                elif cmd == "help" or cmd == "h":
+                    print("there should be some help here…") 
+                else:
+                    print("No such command - type help to get a list of commands")
+            except EOFError:
 
