@@ -4,4 +4,4 @@
 
 	virtualenv venv
 	source venv/bin/activate
-	pip install -i requirements.txt
+	pip install -r requirements.txt
