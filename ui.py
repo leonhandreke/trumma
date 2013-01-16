@@ -36,4 +36,4 @@ def run_ui():
             else:
                 print("No such command - type help to get a list of commands")
         except EOFError:
-            pass
+            break
