@@ -4,6 +4,8 @@ import readline
 
 from gevent import monkey
 
+monkey.patch_sys()
+
 def run_ui():
     while True:
         try:
