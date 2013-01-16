@@ -3,6 +3,11 @@ import datetime
 
 import settings
 
+class PeerList(list):
+    self_peer = None
+
+peerlist = PeerList()
+
 class Peer(object):
     def __init__(self, address, tcp_port, alias, *args, **kwargs):
         super(Peer, self).__init__(*args, **kwargs)

@@ -4,6 +4,7 @@ import readline
 
 from gevent import monkey
 
+from peerlist import peerlist
 monkey.patch_sys()
 
 def run_ui():
@@ -22,9 +23,11 @@ def run_ui():
             scmd = cmd.split();
 
             if (cmd == "list peers"):
-                print(*self._peerlist, sep="\n")
+                print(*peerlist, sep="\n")
+            elif cmd == "self":
+                print(peerlist.self_peer)
             elif cmd.startswith("list files ") and len(scmd) == 3:  
-                print(filter(lambda s: s.address==scmd[2], self._peerlist))
+                print(filter(lambda s: s.address==scmd[2], peerlist))
             elif cmd.startswith("get filelist ") and len(scmd) == 3:
                 print("get filelist " + scmd[2])
             elif cmd.startswith("get file ") and len(scmd) == 4:

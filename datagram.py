@@ -7,6 +7,9 @@ def receive_datagrams(udp_socket):
         # message = parser.parse(data, sender)
         # do something with the message
 
+def handle_datagram(data, address):
+    print data
+
 #class DatagramProcessor(Thread):
 #    def __init__(self, datagram_sender, message_receive_queue, *args, **kwargs):
 #        super(DatagramProcessor, self).__init__(*args, **kwargs)
