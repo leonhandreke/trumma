@@ -1,6 +1,8 @@
 import hashlib
 import datetime
 
+import gevent
+
 import settings
 
 class PeerList(list):
@@ -21,6 +23,13 @@ class Peer(object):
     def __str__(self):
         return self.alias + " (" + self.address + ")"
 
+def decrement_other_peers_files_ttl():
+    while True:
+        for peer in peerlist:
+            if peer is not peerlist.self_peer:
+                for f in peer.files:
+                    f.ttl -= 1
+        gevent.sleep(1)
 
 class AvailableFile(object):
     length = None

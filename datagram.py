@@ -44,7 +44,7 @@ class TrummaDatagramServer(DatagramServer):
 
     def handle_file_announcement(self, message):
         try:
-            f = filter(lambda f: f.sha_hash = message.sha_hash, message.sender.files)[0]
+            f = filter(lambda f: f.sha_hash == message.sha_hash, message.sender.files)[0]
         except IndexError:
             f = AvailableFile(message.sha_hash)
             self.sender.files.append(f)
