@@ -48,8 +48,9 @@ def run_ui():
                     print('No peer "' + query + '" found.')
                 else:
                     for peer in matchingpeers:
-                        print(filter(
-                            lambda s: s.address == peer.address, peerlist))
+                        print("Peer " + peer.alias + " has " + str(len(peer.files)) + " files:")
+                        for f in peer.files:
+                            print(f.name + "  " + str(f.length) + "  " + str(f.sha_hash))
             elif cmd.startswith("get filelist ") and len(scmd) == 3:
                 print("get filelist " + scmd[2])
             elif cmd.startswith("get file ") and len(scmd) == 4:

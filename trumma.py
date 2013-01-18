@@ -26,9 +26,10 @@ for f in os.listdir(settings.DOWNLOAD_PATH):
         new_file = LocallyAvailableFile(None)
         new_file.length = os.path.getsize(file_path),
         new_file.ttl = float("inf")
-        new_file.name = f
+        new_file.name = file_path
         new_file.local_path = file_path
         new_file.sha_hash = new_file.calculate_sha_hash()
+        peerlist.self_peer.files.append(new_file)
 
 # decrement the TTL of all other peer's files every second
 Greenlet.spawn(decrement_other_peers_files_ttl)
