@@ -1,6 +1,8 @@
 import hashlib
 import datetime
 
+import gevent
+
 import settings
 
 class PeerList(list):
@@ -9,32 +11,39 @@ class PeerList(list):
 peerlist = PeerList()
 
 class Peer(object):
-    def __init__(self, address, tcp_port, alias, *args, **kwargs):
+    alias = None
+    tcp_port = None
+
+    def __init__(self, address, *args, **kwargs):
         super(Peer, self).__init__(*args, **kwargs)
         self.address = address
-        self.tcp_port = tcp_port
-        self.alias = alias
         self.last_seen = datetime.datetime.now()
         self.files = []
 
     def __str__(self):
         return self.alias + " (" + self.address + ")"
 
+def decrement_other_peers_files_ttl():
+    while True:
+        for peer in peerlist:
+            if peer is not peerlist.self_peer:
+                for f in peer.files:
+                    f.ttl -= 1
+        gevent.sleep(1)
 
 class AvailableFile(object):
-    def __init__(self, sha_hash, length, name, ttl=float("inf"), meta=None, *args, **kwargs):
+    length = None
+    name = None
+    ttl = None
+    meta = None
+
+    def __init__(self, sha_hash, *args, **kwargs):
         super(AvailableFile, self).__init__(*args, **kwargs)
         self.sha_hash = sha_hash
-        self.length = length
-        self.name = name
-        self.ttl = ttl
-        self.meta = meta
 
 
 class LocallyAvailableFile(AvailableFile):
-    def __init__(self, local_path, *args, **kwargs):
-        super(LocallyAvailableFile, self).__init__(*args, **kwargs)
-        self.local_path = local_path
+    local_path = None
 
     def calculate_sha_hash(self):
         h = hashlib.sha1()

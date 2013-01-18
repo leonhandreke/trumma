@@ -1,4 +1,4 @@
-def parse(data, sender):
+def parse(data, sender_address):
     """
     Return a Message object with the deserialized message.
 

@@ -8,33 +8,37 @@ from gevent.server import StreamServer, DatagramServer
 from gevent import Greenlet
 
 import settings
-from datagram import handle_datagram
+from datagram import TrummaDatagramServer
 from connection import handle_connection
 from ui import run_ui
-from peerlist import Peer, LocallyAvailableFile, peerlist
+from peerlist import Peer, LocallyAvailableFile, decrement_other_peers_files_ttl, peerlist
 
-peerlist.self_peer = Peer("127.0.0.1", settings.TCP_PORT, "trumma on " + socket.gethostname())
+
+peerlist.self_peer = Peer("127.0.0.1")
+peerlist.self_peer.tcp_port = settings.TCP_PORT
+peerlist.self_peer.alias = "trumma on " + socket.gethostname()
 peerlist.append(peerlist.self_peer)
 
 # build own file list
 for f in os.listdir(settings.DOWNLOAD_PATH):
     file_path = os.path.join(settings.DOWNLOAD_PATH, f)
     if os.path.isfile(file_path):
-        peerlist.self_peer.files.append(
-                LocallyAvailableFile(file_path,
-                    None,
-                    os.path.getsize(file_path),
-                    f))
+        new_file = LocallyAvailableFile(None)
+        new_file.length = os.path.getsize(file_path),
+        new_file.ttl = float("inf")
+        new_file.name = f
+        new_file.local_path = file_path
+        new_file.sha_hash = new_file.calculate_sha_hash()
 
-for f in peerlist.self_peer.files:
-    f.sha_hash = f.calculate_sha_hash()
+# decrement the TTL of all other peer's files every second
+Greenlet.spawn(decrement_other_peers_files_ttl)
 
 # Set up the TCP server
 ipv4_connection_server = StreamServer((settings.BIND_INTERFACE, settings.TCP_PORT), handle_connection)
 ipv4_connection_server.start()
 
 # Set up the UDP server
-ipv4_datagram_server = DatagramServer((settings.BIND_INTERFACE, settings.UDP_PORT), handle_datagram)
+ipv4_datagram_server = TrummaDatagramServer((settings.BIND_INTERFACE, settings.UDP_PORT))
 
 # Modify some private (?) members to make it join the multicast group
 ipv4_datagram_server.init_socket()
