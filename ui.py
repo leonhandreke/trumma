@@ -34,25 +34,18 @@ def run_ui():
             elif cmd == "self":
                 print(peerlist.self_peer)
             elif cmd.startswith("list files ") and len(scmd) >= 3:
-                matchingpeers = []
-                query = ' '.join(scmd[2:])
-                for peer in peerlist:
-                    if peer.alias == query or peer.address == scmd[2]:
-                        matchingpeers.append(peer)
+                peer = findpeer(' '.join(scmd[2:]))
+                if peer:
+                    print("Peer " + peer.alias + " has "
+                        + str(len(peer.files)) + " files:")
+                    for f in peer.files:
+                        print(f.name + "  " + str(f.length)
+                            + "  " + str(f.sha_hash))
 
-                if len(matchingpeers) > 1:
-                    print("The following peers match your search, please " +
-                            "specify the peer whose files you want to see " +
-                            "by typing \"list peers $ip\"")
-                elif len(matchingpeers) == 0:
-                    print('No peer "' + query + '" found.')
-                else:
-                    for peer in matchingpeers:
-                        print("Peer " + peer.alias + " has " + str(len(peer.files)) + " files:")
-                        for f in peer.files:
-                            print(f.name + "  " + str(f.length) + "  " + str(f.sha_hash))
-            elif cmd.startswith("get filelist ") and len(scmd) == 3:
-                print("get filelist " + scmd[2])
+            elif cmd.startswith("get filelist ") and len(scmd) >= 3:
+                peers = findpeers(' '.join(scmd[2:]))
+
+                print("get filelist " + query)
             elif cmd.startswith("get file ") and len(scmd) == 4:
                 print("get file " + scmd[2] + " " + scmd[3])
             elif cmd.startswith("find peers"):
@@ -65,3 +58,21 @@ def run_ui():
                 print("No such command - type help to get a list of commands")
         except EOFError:
             break
+
+
+def findpeer(query):
+    peers = []
+    for peer in peerlist:
+        if peer.alias == query or peer.address == query:
+            peers.append(peer)
+    if len(peers) > 1:
+        print("The following peers match your search, please " +
+                "specify the peer using its ip address'")
+        for peer in peers:
+            print(peer.alilias + " " + peer.addddress)
+        return
+    elif len(peers) == 0:
+        print('No peer "' + query + '" found.')
+        return
+    else:
+        return(peers[0])
