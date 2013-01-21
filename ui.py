@@ -3,12 +3,19 @@ from __future__ import print_function
 import readline
 
 from gevent import monkey
-
+import settings
 from peerlist import peerlist
+#from datagram import TrummaDatagramServer
+#from trumma import ipv4_datagram_server
+from message import HiMessage
+
 monkey.patch_sys()
 
+import pdb
 
-def run_ui():
+
+def run_ui(ipv4_datagram_server):
+    ipv4_datagram_server = ipv4_datagram_server
     while True:
         try:
             cmd = raw_input("> ")
@@ -41,15 +48,16 @@ def run_ui():
                     for f in peer.files:
                         print(f.name + "  " + str(f.length)
                             + "  " + str(f.sha_hash))
-
             elif cmd.startswith("get filelist ") and len(scmd) >= 3:
-                peers = findpeers(' '.join(scmd[2:]))
+                peer = findpeer(' '.join(scmd[2:]))
 
                 print("get filelist " + query)
             elif cmd.startswith("get file ") and len(scmd) == 4:
                 print("get file " + scmd[2] + " " + scmd[3])
             elif cmd.startswith("find peers"):
-                print("find peers")
+                hi = HiMessage()
+                ipv4_datagram_server.send_message_to_multicast_group(hi)
+                print("finding peers … please check peerlist to see if somebody answered")
             elif cmd == "exit" or cmd == "quit" or cmd == "q":
                 break
             elif cmd == "help" or cmd == "h":

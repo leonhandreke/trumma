@@ -1,3 +1,5 @@
+import getpass
+
 UDP_PORT = 4747
 TCP_PORT = 4747
 
@@ -5,4 +7,5 @@ BIND_INTERFACE = ''
 IPV4_MULTICAST_GROUP = "239.255.0.113"
 IPV6_MULITCAST_GROUP = "ff05::7171"
 
+ALIAS = getpass.getuser()
 DOWNLOAD_PATH = "/tmp/trumma"

@@ -10,6 +10,7 @@ def build(message):
     """
     Given a Message object, construct a str Object to be transmitted over the network.
     """
+    return "Hi"
     pass
 
 

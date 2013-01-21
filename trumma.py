@@ -11,12 +11,13 @@ import settings
 from datagram import TrummaDatagramServer
 from connection import handle_connection
 from ui import run_ui
-from peerlist import Peer, LocallyAvailableFile, decrement_other_peers_files_ttl, peerlist
+from peerlist import Peer, LocallyAvailableFile
+from peerlist import decrement_other_peers_files_ttl, peerlist
 
 
 peerlist.self_peer = Peer("127.0.0.1")
 peerlist.self_peer.tcp_port = settings.TCP_PORT
-peerlist.self_peer.alias = "trumma on " + socket.gethostname()
+peerlist.self_peer.alias = settings.ALIAS
 peerlist.append(peerlist.self_peer)
 
 # build own file list
@@ -35,20 +36,23 @@ for f in os.listdir(settings.DOWNLOAD_PATH):
 Greenlet.spawn(decrement_other_peers_files_ttl)
 
 # Set up the TCP server
-ipv4_connection_server = StreamServer((settings.BIND_INTERFACE, settings.TCP_PORT), handle_connection)
+ipv4_connection_server = StreamServer((settings.BIND_INTERFACE,
+    settings.TCP_PORT), handle_connection)
 ipv4_connection_server.start()
 
 # Set up the UDP server
-ipv4_datagram_server = TrummaDatagramServer((settings.BIND_INTERFACE, settings.UDP_PORT))
+ipv4_datagram_server = TrummaDatagramServer((settings.BIND_INTERFACE,
+    settings.UDP_PORT))
 
 # Modify some private (?) members to make it join the multicast group
 ipv4_datagram_server.init_socket()
 ipv4_datagram_server.socket.setsockopt(socket.IPPROTO_IP,
         socket.IP_ADD_MEMBERSHIP,
-        socket.inet_aton(settings.IPV4_MULTICAST_GROUP) + struct.pack('=I', socket.INADDR_ANY))
+        socket.inet_aton(settings.IPV4_MULTICAST_GROUP) +
+            struct.pack('=I', socket.INADDR_ANY))
 ipv4_datagram_server.start()
 
-Greenlet.spawn(run_ui).join()
+Greenlet.spawn(run_ui(ipv4_datagram_server)).join()
 
 ipv4_connection_server.stop()
 ipv4_datagram_server.stop()

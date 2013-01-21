@@ -4,6 +4,7 @@ from gevent.server import DatagramServer
 import parser
 from message import HiMessage, YoMessage
 from peerlist import Peer, peerlist
+import settings
 
 
 class TrummaDatagramServer(DatagramServer):
