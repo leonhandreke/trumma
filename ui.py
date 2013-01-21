@@ -50,18 +50,20 @@ def run_ui(ipv4_datagram_server):
                             + "  " + str(f.sha_hash))
             elif cmd.startswith("get filelist ") and len(scmd) >= 3:
                 peer = findpeer(' '.join(scmd[2:]))
-
+                #todo: implement
                 print("get filelist " + query)
             elif cmd.startswith("get file ") and len(scmd) == 4:
                 print("get file " + scmd[2] + " " + scmd[3])
+                #todo: implement
             elif cmd.startswith("find peers"):
-                hi = HiMessage()
-                ipv4_datagram_server.send_message_to_multicast_group(hi)
+                #pdb.set_trace()
+                ipv4_datagram_server.send_hi_message_to_multicast_group()
                 print("finding peers … please check peerlist to " +
                     "see if somebody answered")
             elif cmd == "exit" or cmd == "quit" or cmd == "q":
                 break
             elif cmd == "help" or cmd == "h":
+                #todo: implement
                 print("there should be some help here…")
             else:
                 print("No such command - type help to get a list of commands")
