@@ -40,7 +40,7 @@ ipv4_connection_server = StreamServer((settings.BIND_INTERFACE,
     settings.TCP_PORT), handle_connection)
 ipv4_connection_server.start()
 
-# Set up the UDP server
+# Set up the v4 UDP server
 ipv4_datagram_server = TrummaDatagramServer((settings.BIND_INTERFACE,
     settings.UDP_PORT))
 
@@ -52,7 +52,20 @@ ipv4_datagram_server.socket.setsockopt(socket.IPPROTO_IP,
             struct.pack('=I', socket.INADDR_ANY))
 ipv4_datagram_server.start()
 
-Greenlet.spawn(run_ui(ipv4_datagram_server)).join()
+# Set up the v6 UDP server
+ipv6_datagram_server = TrummaDatagramServer((settings.BIND_INTERFACE,
+    settings.UDP_PORT))
+
+# Modify some private (?) members to make it join the multicast group
+ipv6_datagram_server.init_socket()
+ipv6_datagram_server.socket.setsockopt(socket.IPPROTO_IP,
+        socket.IP_ADD_MEMBERSHIP,
+        socket.inet_aton(settings.IPV6_MULTICAST_GROUP) +
+            struct.pack('=I', socket.INADDR_ANY))
+ipv6_datagram_server.start()
+
+Greenlet.spawn(run_ui(ipv4_datagram_server, ipv4_connection_server,
+    ipv6_datagram_server, ipv6_connection_server)).join()
 
 ipv4_connection_server.stop()
 ipv4_datagram_server.stop()
