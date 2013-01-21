@@ -57,7 +57,8 @@ def run_ui(ipv4_datagram_server):
             elif cmd.startswith("find peers"):
                 hi = HiMessage()
                 ipv4_datagram_server.send_message_to_multicast_group(hi)
-                print("finding peers … please check peerlist to see if somebody answered")
+                print("finding peers … please check peerlist to " +
+                    "see if somebody answered")
             elif cmd == "exit" or cmd == "quit" or cmd == "q":
                 break
             elif cmd == "help" or cmd == "h":
