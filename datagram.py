@@ -62,6 +62,9 @@ class TrummaDatagramServer(DatagramServer):
     def send_hi_message_to_multicast_group(self):
         self.send_message_to_multicast_group(HiMessage())
 
+    def send_bye_message_to_multicast_group(self):
+        self.send_message_to_multicast_group(ByeMessage())
+
     def send_message_to_multicast_group(self, message):
         data = parser.build(message)
         self.sendto(data, (settings.IPV4_MULTICAST_GROUP, settings.UDP_PORT))

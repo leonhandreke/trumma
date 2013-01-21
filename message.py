@@ -21,6 +21,11 @@ class YoMessage(Message):
     pass
 
 
+class ByeMessage(Message):
+    tcp_port = settings.UDP_PORT
+    pass
+
+
 class FileAnnouncementMessage(Message):
     # sha_hash = hexadecmial string
     # length = length in bytes
