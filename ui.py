@@ -8,18 +8,19 @@ from peerlist import peerlist
 #from datagram import TrummaDatagramServer
 #from trumma import ipv4_datagram_server
 from message import HiMessage
+from connection import get_file_list, get_file
 
 monkey.patch_sys()
 
 import pdb
 
 
-def run_ui(ipv4_datagram_server, ipv4_connection_server,
-    ipv6_datagram_server, ipv6_connection_server):
+#def run_ui(ipv4_datagram_server, ipv6_datagram_server):
+    #ipv6_datagram_server = ipv6_datagram_server
+    #ipv4_datagram_server = ipv4_datagram_server
+def run_ui(ipv4_datagram_server):
     ipv4_datagram_server = ipv4_datagram_server
-    ipv4_connection_server = ipv4_connection_server
-    ipv6_datagram_server = ipv6_datagram_server
-    ipv6_connection_server = ipv6_connection_server
+
     while True:
         try:
             cmd = raw_input("> ")
@@ -54,15 +55,16 @@ def run_ui(ipv4_datagram_server, ipv4_connection_server,
                             + "  " + str(f.sha_hash))
             elif cmd.startswith("get filelist ") and len(scmd) >= 3:
                 peer = findpeer(' '.join(scmd[2:]))
-                ipv4_connection_server.get_file_list(peer.address)
-                #print("get filelist " + query)
+                if peer:
+                    get_file_list(peer)
             elif cmd.startswith("get file ") and len(scmd) == 4:
-                print("get file " + scmd[2] + " " + scmd[3])
-                #todo: implement
+                peer = findpeer(' '.join(scmd[3:]))
+                if peer:
+                    get_file(peer, scmd[2])
             elif cmd.startswith("find peers"):
                 #pdb.set_trace()
                 ipv4_datagram_server.send_hi_message_to_multicast_group()
-                ipv6_datagram_server.send_hi_message_to_multicast_group()
+                #ipv6_datagram_server.send_hi_message_to_multicast_group()
                 print("finding peers … please check peerlist to " +
                     "see if somebody answered")
             elif cmd == "exit" or cmd == "quit" or cmd == "q":

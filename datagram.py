@@ -2,7 +2,7 @@ from datetime import datetime
 
 from gevent.server import DatagramServer
 import parser
-from message import HiMessage, YoMessage
+from message import HiMessage, YoMessage, ByeMessage
 from peerlist import Peer, peerlist
 import settings
 
