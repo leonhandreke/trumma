@@ -49,17 +49,24 @@ def run_ui(ipv4_datagram_server):
                     numfiles=len(peer.files)
                     ))
                 for f in peer.files:
-                print("{name} {length} {sha_hash}".format(
-                    name=f.name,
-                    length=f.length,
-                    sha_hash=f.sha_hash
-                    ))
+                    print("{name} {length} {sha_hash}".format(
+                        name=f.name,
+                        length=f.length,
+                        sha_hash=f.sha_hash
+                        ))
             elif cmd.startswith("get filelist ") and len(scmd) >= 3:
                 peer = findpeer(' '.join(scmd[2:]))
                 Greenlet.spawn(get_file_list, peer)
             elif cmd.startswith("get file ") and len(scmd) == 4:
                 peer = findpeer(' '.join(scmd[3:]))
-                Greenlet.spawn(get_file, peer, scmd[2])
+                matching_files = filter(lambda f: scmd[2] in f.sha_hash or scmd[2] in f.name, peer.files)
+                if len(matching_files) > 1:
+                    raise UserInputException("Multiple matching files")
+                elif len(matching_files) == 0:
+                    raise UserInputException("No matching file")
+                else:
+                    Greenlet.spawn(get_file, peer, matching_files[0])
+
             elif cmd.startswith("find peers"):
                 ipv4_datagram_server.send_hi_message_to_multicast_group()
                 #ipv6_datagram_server.send_hi_message_to_multicast_group()
