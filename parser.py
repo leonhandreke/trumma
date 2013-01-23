@@ -4,9 +4,8 @@ from message import HiMessage, YoMessage, ByeMessage, FileMessage,\
 GetFilelistMessage, GetFileMessage, FileTransferResponseMessage
 from settings import DEBUG
 
-if DEBUG:
-    DEBUG_message_seperator = u"\\"
-    DEBUG_field_seperator = u"|"
+print_message_seperator = u"\\"
+print_field_seperator = u"|"
 
 # ASCII control character 30 (Record Separator, U+001E)
 # is used as a message separator.
@@ -81,7 +80,7 @@ def build(message, seperator=field_seperator):
 
 
 def __str__(message):
-    return DEBUG_field_seperator.join([message.typ, ] +
+    return print_field_seperator.join([message.typ, ] +
     list(str(x) for x in message.fields))
 
 
