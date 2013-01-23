@@ -9,7 +9,7 @@ import settings
 
 class TrummaDatagramServer(DatagramServer):
     def handle(self, data, address):
-        message = parser.parse(data, address)
+        message = parser.parse(data)
         if message is None:
             # discard message
             print "Datagram with unknown message received"
@@ -20,14 +20,12 @@ class TrummaDatagramServer(DatagramServer):
 
     def handle_hi_message(self, message):
         # insert the new peer into our peerlist
-        message.sender = message.tcp_port
-        message.sender = message.peer_alias
+        message.sender = message.port
+        message.sender = message.username
         peerlist.append(new_peer)
 
         # prepare a yo
-        yo = YoMessage()
-        yo.tcp_port = peerlist.self_peer.tcp_port
-        yo.peer_alias = peerlist.self_peer.alias
+        yo = YoMessage(peerlist.self_peer.tcp_port, peerlist.self_peer.alias)
 
         self.send_message_to_multicast_group(yo)
 
@@ -35,8 +33,8 @@ class TrummaDatagramServer(DatagramServer):
         if message.sender not in peerlist:
             new_peer = Peer(address[0])
             peerlist.append(new_peer)
-        message.sender = message.tcp_port
-        message.sender = message.peer_alias
+        message.sender = message.port
+        message.sender = message.username
 
         self.sender.last_seen = datetime.now()
 
@@ -45,10 +43,10 @@ class TrummaDatagramServer(DatagramServer):
 
     def handle_file_announcement(self, message):
         try:
-            f = filter(lambda f: f.sha_hash == message.sha_hash,
+            f = filter(lambda f: f.sha_hash == message.sha,
                 message.sender.files)[0]
         except IndexError:
-            f = AvailableFile(message.sha_hash)
+            f = AvailableFile(message.sha)
             self.sender.files.append(f)
         f.meta = message.meta
         f.length = message.length
