@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from message import *
+from message import HiMessage, YoMessage, ByeMessage, FileMessage,\
+GetFilelistMessage, GetFileMessage, FileTransferResponseMessage
 from settings import DEBUG
 
 if DEBUG:
@@ -75,12 +76,13 @@ def build(message, seperator=field_seperator):
     """
     if DEBUG:
         print "built: %s" % __str__(message)
-
-    return seperator.join([message.typ, ] + message.fields)
+    return seperator.join([message.typ, ] +
+    list(str(x) for x in message.fields))
 
 
 def __str__(message):
-    return DEBUG_field_seperator.join([message.typ, ] + message.fields)
+    return DEBUG_field_seperator.join([message.typ, ] +
+    list(str(x) for x in message.fields))
 
 
 def __splitFirstField(text):
@@ -127,6 +129,8 @@ def _parseHi(text):
     if len(fields) != 2:
         return None
     port, username = fields
+    port = int(port)
+
     return HiMessage(port, username)
 
 
@@ -136,9 +140,11 @@ def _parseYo(text):
     fields = __splitFields(text)
 
     if len(fields) != 2:
-        return NOne
+        return None
 
     port, username = fields
+    port = int(port)
+
     return YoMessage(port, username)
 
 
@@ -155,6 +161,9 @@ def _parseFile(text):
         return None
 
     sha, ttl, length, name, meta = fields
+    ttl = int(ttl)
+    length = int(length)
+
     return FileMessage(sha, ttl, length, name, meta)
 
 
@@ -172,6 +181,10 @@ def _parseGetFile(text):
         return None
 
     sha, offset, length = fields
+
+    offset = int(offset)
+    length = int(length)
+
     return GetFileMessage(sha, offset, length)
 
 
@@ -183,4 +196,7 @@ def _parseFileTransferResponse(text):
         return None
 
     status, volume = fields
+
+    volume = int(volume)
+
     return FileTransferResponseMessage(status, volume)
