@@ -44,20 +44,22 @@ def run_ui(ipv4_datagram_server):
                 print(peerlist.self_peer)
             elif cmd.startswith("list files ") and len(scmd) >= 3:
                 peer = findpeer(' '.join(scmd[2:]))
-                if peer:
-                    print("Peer " + peer.alias + " has "
-                        + str(len(peer.files)) + " files:")
-                    for f in peer.files:
-                        print(f.name + "  " + str(f.length)
-                            + "  " + str(f.sha_hash))
+                print("Peer {alias} has {numfiles} files:".format(
+                    alias=peer.alias,
+                    numfiles=len(peer.files)
+                    ))
+                for f in peer.files:
+                print("{name} {length} {sha_hash}".format(
+                    name=f.name,
+                    length=f.length,
+                    sha_hash=f.sha_hash
+                    ))
             elif cmd.startswith("get filelist ") and len(scmd) >= 3:
                 peer = findpeer(' '.join(scmd[2:]))
-                if peer:
-                    Greenlet.spawn(get_file_list, peer)
+                Greenlet.spawn(get_file_list, peer)
             elif cmd.startswith("get file ") and len(scmd) == 4:
                 peer = findpeer(' '.join(scmd[3:]))
-                if peer:
-                    Greenlet.spawn(get_file, peer, scmd[2])
+                Greenlet.spawn(get_file, peer, scmd[2])
             elif cmd.startswith("find peers"):
                 ipv4_datagram_server.send_hi_message_to_multicast_group()
                 #ipv6_datagram_server.send_hi_message_to_multicast_group()
@@ -73,16 +75,17 @@ def run_ui(ipv4_datagram_server):
                 print("No such command - type help to get a list of commands")
         except EOFError:
             break
-        except Exception, e:
+        except UserInputException, e:
             print(e)
 
-
+class UserInputException(Exception):
+    pass
 
 def findpeer(query):
     peers = filter(lambda p: query in p.alias or query in p.address, peerlist)
     if len(peers) > 1:
-        raise Exception("The peers with the IP addresses " + ", ".join(map(lambda p: p.address, peers)) + " match.")
+        raise UserInputException("The peers with the IP addresses " + ", ".join(map(lambda p: p.address, peers)) + " match.")
     elif len(peers) == 0:
-        raise Exception("No such peer found.")
+        raise UserInputException("No such peer found.")
     else:
         return(peers[0])
