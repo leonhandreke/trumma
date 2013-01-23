@@ -76,11 +76,11 @@ def build(message, separator=field_separator):
     if DEBUG:
         print "built: %s" % __str__(message)
 
-    return separator.join([message.type, ] + message.fields) + message_separator
+    return separator.join([message.typ, ] + message.fields)
 
 
 def __str__(message):
-    return DEBUG_field_separator.join([message.type, ] + message.fields)
+    return DEBUG_field_separator.join([message.typ, ] + message.fields)
 
 
 def __splitFirstField(text):
@@ -96,27 +96,27 @@ def __splitFields(text):
 
 
 def _parseType(text):
-    type, text = __splitFirstField(text)
+    typ, text = __splitFirstField(text)
 
-    if type == "Hi":
+    if typ == "Hi":
         return _parseHi(text)
-    elif type == "Yo":
+    elif typ == "Yo":
         return _parseYo(text)
-    elif type == "Bye":
+    elif typ == "Bye":
         return _parseBye(text)
-    elif type == "File":
+    elif typ == "File":
         return _parseFile(text)
-    elif type == "Get Filelist":
+    elif typ == "Get Filelist":
         return _parseGetFilelist(text)
-    elif type == "Get File":
+    elif typ == "Get File":
         return _parseGetFile(text)
-    elif type == "File Transfer Response":
+    elif typ == "File Transfer Response":
         return _parseFileTransferResponse(text)
     else:
         print "Warning: Message nicht parsbar."
         if DEBUG:
-            print "type: %s (%s)" % (str(type), typee(type))
-            print "text: %s (%s)" % (str(text), typee(text))
+            print "typ: %s (%s)" % (str(typ), type(typ))
+            print "text: %s (%s)" % (str(text), type(text))
         return None
 
 
