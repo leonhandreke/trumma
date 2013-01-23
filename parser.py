@@ -52,11 +52,11 @@ print_field_seperator = u"|"
 
 # ASCII control character 30 (Record Separator, U+001E)
 # is used as a message separator.
-message_seperator = u"\u001e"
+message_separator = u"\u001e"
 
 # ASCII control caracter 31 (Unit Separator, U+001F)
 # is used as a field separator
-field_seperator = u"\u001f"
+field_separator = u"\u001f"
 
 
 """ Message Examples:
@@ -111,24 +111,24 @@ def parse(data):
     return _parseType(data)
 
 
-def build(message, seperator=field_seperator):
+def build(message, separator=field_separator):
     """
     Given a Message object, construct a str Object to be transmitted over the
     network.
     """
     if DEBUG:
         print "built: %s" % __str__(message)
-    return seperator.join([message.typ, ] +
+    return separator.join([message.typ, ] +
     list(str(x) for x in message.fields))
 
 
 def __str__(message):
-    return print_field_seperator.join([message.typ, ] +
+    return print_field_separator.join([message.typ, ] +
     list(str(x) for x in message.fields))
 
 
 def __splitFirstField(text):
-    result = text.split(field_seperator, 1)
+    result = text.split(field_separator, 1)
     if len(result) == 1:
         return result[0], ""
     else:
@@ -136,7 +136,7 @@ def __splitFirstField(text):
 
 
 def __splitFields(text):
-    return text.split(field_seperator)
+    return text.split(field_separator)
 
 
 def _parseType(text):
