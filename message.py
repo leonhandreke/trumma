@@ -23,7 +23,7 @@ class HiMessage(Message):
     port = valid port number
     username = string, can be empty
     """
-    typ = "Hi"
+    type = "Hi"
 
     def __init__(self, port, username=""):
         super(HiMessage, self).__init__()
@@ -40,7 +40,7 @@ class YoMessage(Message):
     port = valid port number
     username = string, can be empty
     """
-    typ = "Yo"
+    type = "Yo"
 
     def __init__(self, port, username=""):
         super(YoMessage, self).__init__()
@@ -54,7 +54,7 @@ class YoMessage(Message):
 
 class ByeMessage(Message):
     tcp_port = settings.UDP_PORT
-    typ = "Bye"
+    type = "Bye"
 
     def __init__(self):
         super(ByeMessage, self).__init__()
@@ -68,7 +68,7 @@ class FileMessage(Message):
     name = "filename.pdf"
     meta = "Some additional things good to know"
     """
-    typ = "File"
+    type = "File"
 
     def __init__(self, sha, ttl, length, name, meta):
         super(FileMessage, self).__init__()
@@ -84,7 +84,7 @@ class FileMessage(Message):
 
 
 class GetFilelistMessage(Message):
-    typ = "Get Filelist"
+    type = "Get Filelist"
 
     def __init__(self):
         super(GetFilelistMessage, self).__init__()
@@ -96,7 +96,7 @@ class GetFileMessage(Message):
     offset = start at offset (octet)
     length = length in bytes (octet)
     """
-    typ = "Get File"
+    type = "Get File"
 
     def __init__(self, sha, offset, length):
         super(GetFileMessage, self).__init__()
@@ -114,7 +114,7 @@ class FileTransferResponseMessage(Message):
     status = status (one of three)
     volume = number of octets of the file that the peer expects to send.
     """
-    typ = "File Transfer Response"
+    type = "File Transfer Response"
 
     def __init__(self, status, volume):
         super(FileTransferResponseMessage, self).__init__()
