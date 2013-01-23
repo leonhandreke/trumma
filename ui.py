@@ -3,17 +3,14 @@ from __future__ import print_function
 import readline
 
 from gevent import monkey
+from gevent import Greenlet
+
 import settings
 from peerlist import peerlist
-#from datagram import TrummaDatagramServer
-#from trumma import ipv4_datagram_server
 from message import HiMessage
 from connection import get_file_list, get_file
 
 monkey.patch_sys()
-
-import pdb
-
 
 #def run_ui(ipv4_datagram_server, ipv6_datagram_server):
     #ipv6_datagram_server = ipv6_datagram_server
@@ -56,13 +53,12 @@ def run_ui(ipv4_datagram_server):
             elif cmd.startswith("get filelist ") and len(scmd) >= 3:
                 peer = findpeer(' '.join(scmd[2:]))
                 if peer:
-                    get_file_list(peer)
+                    Greenlet.spawn(get_file_list, peer)
             elif cmd.startswith("get file ") and len(scmd) == 4:
                 peer = findpeer(' '.join(scmd[3:]))
                 if peer:
-                    get_file(peer, scmd[2])
+                    Greenlet.spawn(get_file, peer, scmd[2])
             elif cmd.startswith("find peers"):
-                #pdb.set_trace()
                 ipv4_datagram_server.send_hi_message_to_multicast_group()
                 #ipv6_datagram_server.send_hi_message_to_multicast_group()
                 print("finding peers … please check peerlist to " +
@@ -77,21 +73,16 @@ def run_ui(ipv4_datagram_server):
                 print("No such command - type help to get a list of commands")
         except EOFError:
             break
+        except Exception, e:
+            print(e)
+
 
 
 def findpeer(query):
-    peers = []
-    for peer in peerlist:
-        if peer.alias == query or peer.address == query:
-            peers.append(peer)
+    peers = filter(lambda p: query in p.alias or query in p.address, peerlist)
     if len(peers) > 1:
-        print("The following peers match your search, please " +
-                "specify the peer using its ip address'")
-        for peer in peers:
-            print(peer.alilias + " " + peer.addddress)
-        return
+        raise Exception("The peers with the IP addresses " + ", ".join(map(lambda p: p.address, peers)) + " match.")
     elif len(peers) == 0:
-        print('No peer "' + query + '" found.')
-        return
+        raise Exception("No such peer found.")
     else:
         return(peers[0])
