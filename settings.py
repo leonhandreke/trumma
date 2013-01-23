@@ -4,7 +4,7 @@ import socket
 UDP_PORT = 4747
 TCP_PORT = 4747
 
-BIND_INTERFACE_V4 = socket.gethostbyname(socket.gethostname())
+BIND_INTERFACE_V4 = ''
 BIND_INTERFACE_V6 = ''
 IPV4_MULTICAST_GROUP = "239.255.0.113"
 IPV6_MULTICAST_GROUP = "ff05::7171"
