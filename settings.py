@@ -12,4 +12,4 @@ IPV6_MULTICAST_GROUP = "ff05::7171"
 ALIAS = getpass.getuser()
 DOWNLOAD_PATH = "/tmp/trumma"
 
-DEBUG = False
+DEBUG = True
