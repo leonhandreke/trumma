@@ -117,7 +117,8 @@ def build(message, separator=field_separator):
     network.
     """
     if not isinstance(message, Message):
-        raise TypeError("message is not a Message object, can not build from it")
+        raise TypeError("message is not a Message object, \
+        can not build from it")
 
     if DEBUG:
         print "built: %s" % __str__(message)
