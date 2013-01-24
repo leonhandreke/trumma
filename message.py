@@ -25,10 +25,10 @@ class HiMessage(Message):
     """
     typ = "Hi"
 
-    def __init__(self, port, username=""):
+    def __init__(self, username=""):
         super(HiMessage, self).__init__()
-        self.port = port
-        self.username = username
+        self.port = settings.UDP_PORT
+        self.username = settings.ALIAS
 
     @property
     def fields(self):
