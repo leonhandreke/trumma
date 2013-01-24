@@ -43,7 +43,7 @@ u'Kev'
 """
 
 from message import HiMessage, YoMessage, ByeMessage, FileMessage,\
-GetFilelistMessage, GetFileMessage, FileTransferResponseMessage
+GetFilelistMessage, GetFileMessage, FileTransferResponseMessage, Message
 from settings import DEBUG
 
 print_message_seperator = u"\\"
@@ -116,6 +116,10 @@ def build(message, separator=field_separator):
     Given a Message object, construct a str Object to be transmitted over the
     network.
     """
+    if not isinstance(message, Message):
+        raise TypeError("message is not a Message object, \
+        can not build from it")
+
     if DEBUG:
         print "built: %s" % __str__(message)
     return separator.join([message.typ, ] +
