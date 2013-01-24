@@ -14,14 +14,18 @@ class TrummaDatagramServer(DatagramServer):
             # discard message
             print "Datagram with unknown message received"
         elif isinstance(message, HiMessage):
-            self.handle_hi_message(message)
+            self.handle_hi_message(message, address)
         elif isinstance(message, YoMessage):
             self.handle_yo_message(message)
 
-    def handle_hi_message(self, message):
+    def handle_hi_message(self, message, address):
         # insert the new peer into our peerlist
         message.sender = message.port
         message.sender = message.username
+        new_peer = Peer(address)
+        new_peer.tcp_port = message.port
+        new_peer.alias = message.username
+
         peerlist.append(new_peer)
 
         # prepare a yo
@@ -58,7 +62,8 @@ class TrummaDatagramServer(DatagramServer):
             sender.files.remove(f)
 
     def send_hi_message_to_multicast_group(self):
-        self.send_message_to_multicast_group(HiMessage())
+        hi = HiMessage(username=settings.ALIAS, port=settings.TCP_PORT)
+        self.send_message_to_multicast_group(hi)
 
     def send_bye_message_to_multicast_group(self):
         self.send_message_to_multicast_group(ByeMessage())
