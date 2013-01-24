@@ -123,7 +123,7 @@ def build(message, separator=field_separator):
 
 
 def __str__(message):
-    return print_field_separator.join([message.typ, ] +
+    return print_field_seperator.join([message.typ, ] +
     list(str(x) for x in message.fields))
 
 
