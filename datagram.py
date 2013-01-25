@@ -1,15 +1,14 @@
 from datetime import datetime
 
 from gevent.server import DatagramServer
-import parser
-from message import HiMessage, YoMessage, ByeMessage
+from message import create_message, HiMessage, YoMessage, ByeMessage
 from peerlist import Peer, peerlist, findpeer
 import settings
 
 
 class TrummaDatagramServer(DatagramServer):
     def handle(self, data, address):
-        message = parser.parse(data)
+        message = create_message(data)
         if message is None:
             # discard message
             print "Datagram with unknown message received"
@@ -70,6 +69,6 @@ class TrummaDatagramServer(DatagramServer):
         self.send_message_to_multicast_group(ByeMessage())
 
     def send_message_to_multicast_group(self, message):
-        data = parser.build(message)
+        data = message.data
         self.sendto(data, (settings.IPV4_MULTICAST_GROUP, settings.UDP_PORT))
 
