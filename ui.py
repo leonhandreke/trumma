@@ -4,7 +4,7 @@ import readline
 
 from gevent import monkey
 import settings
-from peerlist import peerlist
+from peerlist import peerlist, findpeer
 #from datagram import TrummaDatagramServer
 #from trumma import ipv4_datagram_server
 from message import HiMessage
@@ -77,21 +77,3 @@ def run_ui(ipv4_datagram_server):
                 print("No such command - type help to get a list of commands")
         except EOFError:
             break
-
-
-def findpeer(query):
-    peers = []
-    for peer in peerlist:
-        if peer.alias == query or peer.address == query:
-            peers.append(peer)
-    if len(peers) > 1:
-        print("The following peers match your search, please " +
-                "specify the peer using its ip address'")
-        for peer in peers:
-            print(peer.alilias + " " + peer.addddress)
-        return
-    elif len(peers) == 0:
-        print('No peer "' + query + '" found.')
-        return
-    else:
-        return(peers[0])

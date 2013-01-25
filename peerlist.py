@@ -60,3 +60,21 @@ class LocallyAvailableFile(AvailableFile):
                 break
             h.update(data)
         self.sha_hash = h.hexdigest()
+
+
+def findpeer(query):
+    peers = []
+    for peer in peerlist:
+        if peer.alias == query or peer.address == query:
+            peers.append(peer)
+    if len(peers) > 1:
+        print("The following peers match your search, please " +
+                "specify the peer using its ip address'")
+        for peer in peers:
+            print(peer.alilias + " " + peer.addddress)
+        return
+    elif len(peers) == 0:
+        print('No peer "' + query + '" found.')
+        return
+    else:
+        return(peers[0])

@@ -3,7 +3,7 @@ from datetime import datetime
 from gevent.server import DatagramServer
 import parser
 from message import HiMessage, YoMessage, ByeMessage
-from peerlist import Peer, peerlist
+from peerlist import Peer, peerlist, findpeer
 import settings
 
 
@@ -16,7 +16,7 @@ class TrummaDatagramServer(DatagramServer):
         elif isinstance(message, HiMessage):
             self.handle_hi_message(message, address)
         elif isinstance(message, YoMessage):
-            self.handle_yo_message(message)
+            self.handle_yo_message(message, address)
 
     def handle_hi_message(self, message, address):
         # insert the new peer into our peerlist
@@ -33,14 +33,15 @@ class TrummaDatagramServer(DatagramServer):
 
         self.send_message_to_multicast_group(yo)
 
-    def handle_yo_message(self, message):
-        if message.sender not in peerlist:
-            new_peer = Peer(address[0])
+    def handle_yo_message(self, message, address):
+        peer = findpeer(address)
+        if peer not in peerlist:
+            new_peer = Peer(address)
+            new_peer.tcp_port = message.port
+            new_peer.alias = message.username
             peerlist.append(new_peer)
-        message.sender = message.port
-        message.sender = message.username
-
-        self.sender.last_seen = datetime.now()
+        else:
+            peer.last_seen = datetime.now()
 
     def handle_bye_message(self, message):
         peerlist.remove(message.sender)
