@@ -1,3 +1,19 @@
+#/usr/bin/python2
+# -*- coding: utf-8 -*-
+"""
+>>> import message
+>>> o = message.HiMessage(123, "Kev")
+>>> print o
+Hi|123|Kev
+>>> i = message.create_message(o.data)
+>>> print i
+Hi|123|Kev
+>>> i.username
+u'Kev'
+>>> i.port
+123
+
+"""
 import settings
 
 
@@ -133,3 +149,7 @@ class FileTransferResponseMessage(Message):
     @property
     def fields(self):
         return [self.status, self.volume]
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
