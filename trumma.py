@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 import struct
 import os
+import pdb
 
 import gevent
 from gevent import socket
@@ -14,8 +15,7 @@ from ui import run_ui
 from peerlist import Peer, LocallyAvailableFile
 from peerlist import decrement_other_peers_files_ttl, peerlist
 
-
-peerlist.self_peer = Peer("127.0.0.1")
+peerlist.self_peer = Peer(settings.OWN_IP)
 peerlist.self_peer.tcp_port = settings.TCP_PORT
 peerlist.self_peer.alias = settings.ALIAS
 peerlist.append(peerlist.self_peer)
@@ -37,6 +37,8 @@ Greenlet.spawn(decrement_other_peers_files_ttl)
 
 
 # Set up the TCP server
+def handle_connection(socket, address):
+    print 'new connection!'
 ipv4_connection_server = StreamServer((settings.BIND_INTERFACE_V4,
     settings.TCP_PORT), handle_connection)
 ipv4_connection_server.start()

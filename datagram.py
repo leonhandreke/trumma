@@ -3,7 +3,7 @@ from datetime import datetime
 from gevent.server import DatagramServer
 import parser
 from message import HiMessage, YoMessage, ByeMessage
-from peerlist import Peer, peerlist, findpeer
+from peerlist import Peer, peerlist, findpeer, find_peer_by_address
 import settings
 
 
@@ -14,27 +14,28 @@ class TrummaDatagramServer(DatagramServer):
             # discard message
             print "Datagram with unknown message received"
         elif isinstance(message, HiMessage):
-            self.handle_hi_message(message, address)
+            self.handle_hi_message(message, address[0])
         elif isinstance(message, YoMessage):
-            self.handle_yo_message(message, address)
+            self.handle_yo_message(message, address[0])
 
     def handle_hi_message(self, message, address):
         # insert the new peer into our peerlist
-        message.sender = message.port
-        message.sender = message.username
-        new_peer = Peer(address)
-        new_peer.tcp_port = message.port
-        new_peer.alias = message.username
-
-        peerlist.append(new_peer)
+        peer = find_peer_by_address(address)
+        if peer not in peerlist:
+            new_peer = Peer(address)
+            new_peer.tcp_port = message.port
+            new_peer.alias = message.username
+            peerlist.append(new_peer)
+        else:
+            peer.last_seen = datetime.now()
 
         # prepare a yo
         yo = YoMessage(peerlist.self_peer.tcp_port, peerlist.self_peer.alias)
-
         self.send_message_to_multicast_group(yo)
 
     def handle_yo_message(self, message, address):
-        peer = findpeer(address)
+        # insert the new peer into our peerlist
+        peer = find_peer_by_address(address)
         if peer not in peerlist:
             new_peer = Peer(address)
             new_peer.tcp_port = message.port
