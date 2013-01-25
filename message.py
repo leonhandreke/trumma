@@ -1,17 +1,26 @@
 import settings
 
-#from peerlist import peerlist
+
+def create_message(data):
+    if isinstance(data, Message):
+        raise TypeError("data is already a Message object!")
+
+    import parser
+    return parser.parse(data)
 
 
 class Message(object):
-    # sender = Peer Object, should be the same object as in the peerlist.
-    # If the sending peer is not yet in the peerlist, a new Peer Object
     def __init__(self):
         pass
 
     def __str__(self):
         import parser
         return parser.__str__(self)
+
+    @property
+    def data(self):
+        import parser
+        return parser.build(self)
 
     @property
     def fields(self):
