@@ -12,7 +12,7 @@ import settings
 from datagram import TrummaDatagramServer
 from connection import handle_connection
 from ui import run_ui
-from peerlist import Peer, LocallyAvailableFile
+from peerlist import Peer, AvailableFile
 from peerlist import decrement_other_peers_files_ttl, peerlist
 
 peerlist.self_peer = Peer(settings.OWN_IP)
@@ -24,8 +24,8 @@ peerlist.append(peerlist.self_peer)
 for f in os.listdir(settings.DOWNLOAD_PATH):
     file_path = os.path.join(settings.DOWNLOAD_PATH, f)
     if os.path.isfile(file_path):
-        new_file = LocallyAvailableFile(None)
-        new_file.length = os.path.getsize(file_path),
+        new_file = AvailableFile(None)
+        new_file.length = os.path.getsize(file_path)
         new_file.ttl = float("inf")
         new_file.name = file_path
         new_file.local_path = file_path
@@ -36,9 +36,6 @@ for f in os.listdir(settings.DOWNLOAD_PATH):
 Greenlet.spawn(decrement_other_peers_files_ttl)
 
 
-# Set up the TCP server
-def handle_connection(socket, address):
-    print 'new connection!'
 ipv4_connection_server = StreamServer((settings.BIND_INTERFACE_V4,
     settings.TCP_PORT), handle_connection)
 ipv4_connection_server.start()

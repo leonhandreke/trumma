@@ -9,6 +9,23 @@ import settings
 class PeerList(list):
     self_peer = None
 
+    def update_with_file_announcement_message(self, message):
+        try:
+            f = filter(lambda f: f.sha_hash == message.sha,
+                message.sender.files)[0]
+        except IndexError:
+            f = AvailableFile(message.sha)
+            message.sender.files.append(f)
+        f.meta = message.meta
+        f.length = message.length
+        f.ttl = message.ttl
+        f.name = message.name
+
+        # if the file was deleted
+        if f.ttl == 0:
+            sender.files.remove(f)
+
+
 peerlist = PeerList()
 
 
@@ -40,16 +57,15 @@ class AvailableFile(object):
     name = None
     ttl = None
     meta = None
+    local_path = None
 
     def __init__(self, sha_hash, *args, **kwargs):
         super(AvailableFile, self).__init__(*args, **kwargs)
         self.sha_hash = sha_hash
 
-
-class LocallyAvailableFile(AvailableFile):
-    local_path = None
-
     def calculate_sha_hash(self):
+        if not self.local_path:
+            raise ValueError("Cannot calculate SHA for non-local file.")
         h = hashlib.sha1()
         # open the file in binary mode
         f = open(self.local_path, "rb")
@@ -59,8 +75,7 @@ class LocallyAvailableFile(AvailableFile):
                 f.close()
                 break
             h.update(data)
-        self.sha_hash = h.hexdigest()
-
+        return h.hexdigest()
 
 def findpeer(query):
     peer = find_peer_by_name(query)
