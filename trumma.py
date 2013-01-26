@@ -2,6 +2,9 @@
 import struct
 import os
 import pdb
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 import gevent
 from gevent import socket
