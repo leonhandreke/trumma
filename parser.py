@@ -144,6 +144,10 @@ def __splitFields(text):
 
 
 def _parseType(text):
+    # strip off trailing message separator
+    if text.endswith(message_separator):
+        text = text[:-1]
+
     typ, text = __splitFirstField(text)
 
     if typ == "Hi":
