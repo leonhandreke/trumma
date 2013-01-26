@@ -30,10 +30,11 @@ class TrummaDatagramServer(DatagramServer):
         else:
             peer.last_seen = datetime.now()
             # prepare a yo, but only if the hi did not come from myself
-            if peer.address != settings.OWN_IP:
-                yo = YoMessage(peerlist.self_peer.tcp_port,
-                    peerlist.self_peer.alias)
-                self.send_message_to_multicast_group(yo)
+
+        if address != settings.OWN_IP:
+            yo = YoMessage(peerlist.self_peer.tcp_port,
+                peerlist.self_peer.alias)
+            self.send_message_to_multicast_group(yo)
 
     def handle_yo_message(self, message, address):
         # insert the new peer into our peerlist
@@ -48,7 +49,8 @@ class TrummaDatagramServer(DatagramServer):
 
     def handle_bye_message(self, message, address):
         peer = find_peer_by_address(address)
-        peerlist.remove(peer)
+        if peer in peerlist:
+            peerlist.remove(peer)
 
     def handle_file_announcement(self, message):
         peerlist.update_with_file_announcement_message(message)
