@@ -9,13 +9,13 @@ import settings
 class PeerList(list):
     self_peer = None
 
-    def update_with_file_announcement_message(self, message):
+    def update_with_file_announcement_message(self, message, sender_peer):
         try:
             f = filter(lambda f: f.sha_hash == message.sha,
-                message.sender.files)[0]
+                sender_peer.files)[0]
         except IndexError:
             f = AvailableFile(message.sha)
-            message.sender.files.append(f)
+            sender_peers.files.append(f)
         f.meta = message.meta
         f.length = message.length
         f.ttl = message.ttl

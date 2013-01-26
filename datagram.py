@@ -18,6 +18,9 @@ class TrummaDatagramServer(DatagramServer):
             self.handle_yo_message(message, address[0])
         elif isinstance(message, ByeMessage):
             self.handle_bye_message(message, address[0])
+        elif isinstance(message, FileMessage):
+            self.handle_file_message(message, address[0])
+
 
     def handle_hi_message(self, message, address):
         # insert the new peer into our peerlist
@@ -52,7 +55,7 @@ class TrummaDatagramServer(DatagramServer):
         if peer in peerlist:
             peerlist.remove(peer)
 
-    def handle_file_announcement(self, message):
+    def handle_file_message(self, message, address):
         peerlist.update_with_file_announcement_message(message)
 
     def send_hi_message_to_multicast_group(self):
