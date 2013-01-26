@@ -6,7 +6,7 @@ from gevent import monkey
 from gevent import Greenlet
 
 import settings
-from peerlist import peerlist
+from peerlist import peerlist, findpeer
 from message import HiMessage
 from connection import get_file_list, get_file
 
@@ -27,7 +27,7 @@ def run_ui(ipv4_datagram_server):
                 scmd = cmd.split()
             # some alias commands first:
             if cmd == "list my files":
-                cmd = "list files 127.0.0.1"
+                cmd = "list files " + settings.OWN_IP
             elif cmd == "listpeers":
                 cmd = "list peers"
             elif ((scmd[0] == "refresh" or scmd[0] == "update") and
@@ -82,17 +82,3 @@ def run_ui(ipv4_datagram_server):
                 print("No such command - type help to get a list of commands")
         except EOFError:
             break
-        except UserInputException, e:
-            print(e)
-
-class UserInputException(Exception):
-    pass
-
-def findpeer(query):
-    peers = filter(lambda p: query in p.alias or query in p.address, peerlist)
-    if len(peers) > 1:
-        raise UserInputException("The peers with the IP addresses " + ", ".join(map(lambda p: p.address, peers)) + " match.")
-    elif len(peers) == 0:
-        raise UserInputException("No such peer found.")
-    else:
-        return(peers[0])

@@ -60,3 +60,44 @@ class LocallyAvailableFile(AvailableFile):
                 break
             h.update(data)
         self.sha_hash = h.hexdigest()
+
+
+def findpeer(query):
+    peer = find_peer_by_name(query)
+    if peer:
+        return peer
+    else:
+        return find_peer_by_address(query)
+
+
+def find_peer_by_name(query):
+    peers = []
+    for peer in peerlist:
+        if peer.alias == query:
+            peers.append(peer)
+    if len(peers) > 1:
+        print("The following peers match your search, please " +
+                "specify the peer using its ip address'")
+        for peer in peers:
+            print(peer.alias + " " + peer.address)
+        return
+    elif len(peers) == 0:
+        return
+    else:
+        return(peers[0])
+
+
+def find_peer_by_address(query):
+    peers = []
+    for peer in peerlist:
+        if peer.address == query:
+            peers.append(peer)
+    if len(peers) > 1:
+        print("More than one peer in the peerlist with the same Address!")
+        for peer in peers:
+            print(peer.alias + " " + peer.address)
+        return
+    elif len(peers) == 0:
+        return
+    else:
+        return(peers[0])

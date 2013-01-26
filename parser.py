@@ -1,11 +1,54 @@
+#/usr/bin/python2
 # -*- coding: utf-8 -*-
+"""
+>>> import parser
 
-from message import *
+>>> o = parser.parse(u"Hi\u001f123\u001fKev")
+>>> print(o)
+Hi|123|Kev
+>>> o.port
+123
+>>> o.username
+u'Kev'
+>>> o.typ
+'Hi'
+>>> o.fields
+[123, u'Kev']
+
+
+>>> o = parser.parse(u"Bye")
+>>> print o
+Bye
+>>> o.typ
+'Bye'
+
+
+
+>>> o = parser.parse(u"File\u001f526b11399df02e253c502a8067eabea17bfae8a8\
+\u001f-1\u001f3\u001fKev\u001fKev")
+>>> print o
+File|526b11399df02e253c502a8067eabea17bfae8a8|-1|3|Kev|Kev
+>>> o.sha
+u'526b11399df02e253c502a8067eabea17bfae8a8'
+>>> print o.ttl
+-1
+>>> print o.sha
+526b11399df02e253c502a8067eabea17bfae8a8
+>>> o.length
+3
+>>> o.name
+u'Kev'
+>>> o.meta
+u'Kev'
+"""
+
+from message import HiMessage, YoMessage, ByeMessage, FileMessage,\
+GetFilelistMessage, GetFileMessage, FileTransferResponseMessage, Message
 from settings import DEBUG
 
-if DEBUG:
-    DEBUG_message_separator = u"\\"
-    DEBUG_field_separator = u"|"
+print_message_seperator = u"\\"
+print_field_seperator = u"|"
+
 
 # ASCII control character 30 (Record Separator, U+001E)
 # is used as a message separator.
@@ -73,14 +116,19 @@ def build(message, separator=field_separator):
     Given a Message object, construct a str Object to be transmitted over the
     network.
     """
+    if not isinstance(message, Message):
+        raise TypeError("message is not a Message object, \
+        can not build from it")
+
     if DEBUG:
         print "built: %s" % __str__(message)
-
-    return separator.join([message.typ, ] + message.fields)
+    return separator.join([message.typ, ] +
+    list(str(x) for x in message.fields))
 
 
 def __str__(message):
-    return DEBUG_field_separator.join([message.typ, ] + message.fields)
+    return print_field_seperator.join([message.typ, ] +
+    list(str(x) for x in message.fields))
 
 
 def __splitFirstField(text):
@@ -127,6 +175,8 @@ def _parseHi(text):
     if len(fields) != 2:
         return None
     port, username = fields
+    port = int(port)
+
     return HiMessage(port, username)
 
 
@@ -136,9 +186,11 @@ def _parseYo(text):
     fields = __splitFields(text)
 
     if len(fields) != 2:
-        return NOne
+        return None
 
     port, username = fields
+    port = int(port)
+
     return YoMessage(port, username)
 
 
@@ -155,6 +207,9 @@ def _parseFile(text):
         return None
 
     sha, ttl, length, name, meta = fields
+    ttl = int(ttl)
+    length = int(length)
+
     return FileMessage(sha, ttl, length, name, meta)
 
 
@@ -172,6 +227,10 @@ def _parseGetFile(text):
         return None
 
     sha, offset, length = fields
+
+    offset = int(offset)
+    length = int(length)
+
     return GetFileMessage(sha, offset, length)
 
 
@@ -183,4 +242,12 @@ def _parseFileTransferResponse(text):
         return None
 
     status, volume = fields
+
+    volume = int(volume)
+
     return FileTransferResponseMessage(status, volume)
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()

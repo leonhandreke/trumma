@@ -1,17 +1,42 @@
+#/usr/bin/python2
+# -*- coding: utf-8 -*-
+"""
+>>> import message
+>>> o = message.HiMessage(123, "Kev")
+>>> print o
+Hi|123|Kev
+>>> i = message.create_message(o.data)
+>>> print i
+Hi|123|Kev
+>>> i.username
+u'Kev'
+>>> i.port
+123
+
+"""
 import settings
 
-#from peerlist import peerlist
+
+def create_message(data):
+    if isinstance(data, Message):
+        raise TypeError("data is already a Message object!")
+
+    import parser
+    return parser.parse(data)
 
 
 class Message(object):
-    # sender = Peer Object, should be the same object as in the peerlist.
-    # If the sending peer is not yet in the peerlist, a new Peer Object
     def __init__(self):
         pass
 
     def __str__(self):
         import parser
         return parser.__str__(self)
+
+    @property
+    def data(self):
+        import parser
+        return parser.build(self)
 
     @property
     def fields(self):
@@ -124,3 +149,7 @@ class FileTransferResponseMessage(Message):
     @property
     def fields(self):
         return [self.status, self.volume]
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
