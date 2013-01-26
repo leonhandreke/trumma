@@ -3,7 +3,7 @@ import os
 from gevent import socket
 
 import settings
-from peerlist import peerlist
+from peerlist import peerlist, find_peer_by_address
 from message import GetFilelistMessage, GetFileMessage, FileMessage
 import parser
 
@@ -48,7 +48,7 @@ def get_file_list(peer):
         if new_data == parser.message_separator:
             message = parser.parse(message_data)
             if message:
-                peerlist.update_with_file_announcement_message(message)
+                peerlist.update_with_file_announcement_message(message, peer)
             message_data = ""
 
     sock.close()
