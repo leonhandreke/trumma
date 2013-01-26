@@ -27,7 +27,7 @@ for f in os.listdir(settings.DOWNLOAD_PATH):
         new_file = AvailableFile(None)
         new_file.length = os.path.getsize(file_path)
         new_file.ttl = float("inf")
-        new_file.name = file_path
+        new_file.name = f
         new_file.local_path = file_path
         new_file.sha_hash = new_file.calculate_sha_hash()
         peerlist.self_peer.files.append(new_file)
