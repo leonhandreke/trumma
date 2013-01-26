@@ -15,7 +15,7 @@ class PeerList(list):
                 sender_peer.files)[0]
         except IndexError:
             f = AvailableFile(message.sha)
-            sender_peers.files.append(f)
+            sender_peer.files.append(f)
         f.meta = message.meta
         f.length = message.length
         f.ttl = message.ttl
