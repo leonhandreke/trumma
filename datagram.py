@@ -47,20 +47,7 @@ class TrummaDatagramServer(DatagramServer):
         peerlist.remove(message.sender)
 
     def handle_file_announcement(self, message):
-        try:
-            f = filter(lambda f: f.sha_hash == message.sha,
-                message.sender.files)[0]
-        except IndexError:
-            f = AvailableFile(message.sha) # FIXME: AvailableFile does not exist
-            self.sender.files.append(f)
-        f.meta = message.meta
-        f.length = message.length
-        f.ttl = message.ttl
-        f.name = message.name
-
-        # if the file was deleted
-        if f.ttl == 0:
-            sender.files.remove(f) # FIXME: sender does not exist
+        peerlist.update_with_file_announcement_message(message)
 
     def send_hi_message_to_multicast_group(self):
         hi = HiMessage(username=settings.ALIAS, port=settings.TCP_PORT)

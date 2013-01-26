@@ -136,9 +136,14 @@ class GetFileMessage(Message):
 
 class FileTransferResponseMessage(Message):
     """
-    status = status (one of three)
+    status = one of three status responses (see below)
     volume = number of octets of the file that the peer expects to send.
     """
+
+    OK_STATUS = "OK"
+    TRY_AGAIN_LATER_STATUS = "Try Again Later"
+    NEVER_TRY_AGAIN_STATUS = "Never Try Again"
+
     typ = "File Transfer Response"
 
     def __init__(self, status, volume):

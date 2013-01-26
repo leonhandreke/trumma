@@ -56,7 +56,8 @@ def run_ui(ipv4_datagram_server):
                         ))
             elif cmd.startswith("get filelist ") and len(scmd) >= 3:
                 peer = findpeer(' '.join(scmd[2:]))
-                Greenlet.spawn(get_file_list, peer)
+                get_filelist_task = Greenlet.spawn(get_file_list, peer)
+                get_filelist_task.join()
             elif cmd.startswith("get file ") and len(scmd) == 4:
                 peer = findpeer(' '.join(scmd[3:]))
                 matching_files = filter(lambda f: scmd[2] in f.sha_hash or scmd[2] in f.name, peer.files)
@@ -65,7 +66,10 @@ def run_ui(ipv4_datagram_server):
                 elif len(matching_files) == 0:
                     raise UserInputException("No matching file")
                 else:
-                    Greenlet.spawn(get_file, peer, matching_files[0])
+                    download_task = Greenlet.spawn(get_file, peer, matching_files[0])
+                    # wait until completion
+                    download_task.join()
+
 
             elif cmd.startswith("find peers"):
                 ipv4_datagram_server.send_hi_message_to_multicast_group()
