@@ -4,7 +4,7 @@ from gevent import socket
 
 import settings
 from peerlist import peerlist, find_peer_by_address
-from message import GetFilelistMessage, GetFileMessage, FileMessage
+from message import GetFilelistMessage, GetFileMessage, FileMessage, FileTransferResponseMessage
 import parser
 
 
@@ -32,7 +32,26 @@ def handle_connection(conn, addr):
         conn.close()
         return
     elif isinstance(message, GetFileMessage):
-        pass
+        try:
+            file_to_send = filter(lambda f: f.sha_hash == message.sha, peerlist.self_peer.files)[0]
+        except:
+            conn.sendall(parser.build(
+                FileTransferResponseMessage(FileTransferResponseMessage.NEVER_TRY_AGAIN_STATUS, 0)
+                ))
+            conn.close()
+            return
+        conn.sendall(parser.build(
+            FileTransferResponseMessage(FileTransferResponseMessage.OK_STATUS, 0)
+            ))
+
+        f = open(file_to_send.local_path)
+        while True:
+            data_to_send = f.read(1024)
+            if data_to_send:
+                conn.sendall(data_to_send)
+            else:
+                conn.close()
+                return
 
 def get_file_list(peer):
     sock = socket.create_connection((peer.address, peer.tcp_port))
