@@ -66,6 +66,7 @@ ipv4_datagram_server.start()
 
 #Greenlet.spawn(run_ui(ipv4_datagram_server, ipv6_datagram_server)).join()
 
+ipv4_datagram_server.send_hi_message_to_multicast_group()
 Greenlet.spawn(run_ui(ipv4_datagram_server)).join()
 
 ipv4_connection_server.stop()
