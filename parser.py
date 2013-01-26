@@ -123,12 +123,12 @@ def build(message, separator=field_separator):
     if DEBUG:
         print "built: %s" % __str__(message)
     return separator.join([message.typ, ] + \
-            list(str(x) for x in message.fields)) + message_separator
+            list(unicode(x, 'utf-8') for x in message.fields)) + message_separator
 
 
 def __str__(message):
     return print_field_seperator.join([message.typ, ] +
-    list(str(x) for x in message.fields))
+    list(unicode(x, 'utf-8') for x in message.fields))
 
 
 def __splitFirstField(text):
