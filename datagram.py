@@ -16,6 +16,8 @@ class TrummaDatagramServer(DatagramServer):
             self.handle_hi_message(message, address[0])
         elif isinstance(message, YoMessage):
             self.handle_yo_message(message, address[0])
+        elif isinstance(message, ByeMessage):
+            self.handle_bye_message(message, address[0])
 
     def handle_hi_message(self, message, address):
         # insert the new peer into our peerlist

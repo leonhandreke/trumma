@@ -4,12 +4,35 @@ from gevent import socket
 
 import settings
 from peerlist import peerlist
-from message import GetFilelistMessage, GetFileMessage
+from message import GetFilelistMessage, GetFileMessage, FileMessage
 import parser
 
 
 def handle_connection(conn, addr):
-    conn.close()
+    message_data = ""
+    while True:
+        new_data = conn.recv(1)
+        message_data += new_data
+        if new_data == parser.message_separator:
+            break
+
+    message = parser.parse(message_data)
+    if message == None:
+        print "Unknown message received in connection to " + addr[0]
+        conn.close()
+        return
+    if isinstance(message, GetFilelistMessage):
+        for f in peerlist.self_peer.files:
+            m = FileMessage(f.sha_hash,
+                    -1 if f.ttl == float("inf") else f.ttl,
+                    f.length,
+                    f.name,
+                    f.meta)
+            conn.sendall(parser.build(m))
+        conn.close()
+        return
+    elif isinstance(message, GetFileMessage):
+        pass
 
 def get_file_list(peer):
     sock = socket.create_connection((peer.address, peer.tcp_port))
