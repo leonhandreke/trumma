@@ -25,15 +25,15 @@ def run_ui(ipv4_datagram_server):
             # split command
             if cmd != "":
                 scmd = cmd.split()
-            # some alias commands first:
-            if cmd == "list my files":
-                cmd = "list files " + settings.OWN_IP
-            elif cmd == "listpeers":
-                cmd = "list peers"
-            elif ((scmd[0] == "refresh" or scmd[0] == "update") and
-                scmd[1] == "filelist" and len(scmd) == 3):
-                cmd = "get filelist " + scmd[2]
-            # split again, we may have changed cmd
+                # some alias commands first:
+                if cmd == "list my files":
+                    cmd = "list files " + settings.OWN_IP
+                elif cmd == "listpeers":
+                    cmd = "list peers"
+                elif ((scmd[0] == "refresh" or scmd[0] == "update") and
+                    scmd[1] == "filelist" and len(scmd) == 3):
+                    cmd = "get filelist " + scmd[2]
+                # split again, we may have changed cmd
 
             if cmd != "":
                 scmd = cmd.split()
