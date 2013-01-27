@@ -3,6 +3,7 @@ from datetime import datetime
 from gevent.server import DatagramServer
 from peerlist import Peer, peerlist, findpeer, find_peer_by_address
 from message import create_message, HiMessage, YoMessage, ByeMessage
+from message import FileMessage
 import settings
 
 
@@ -20,7 +21,6 @@ class TrummaDatagramServer(DatagramServer):
             self.handle_bye_message(message, address[0])
         elif isinstance(message, FileMessage):
             self.handle_file_message(message, address[0])
-
 
     def handle_hi_message(self, message, address):
         # insert the new peer into our peerlist
@@ -56,7 +56,8 @@ class TrummaDatagramServer(DatagramServer):
             peerlist.remove(peer)
 
     def handle_file_message(self, message, address):
-        peerlist.update_with_file_announcement_message(message)
+        peer = find_peer_by_address(address)
+        peerlist.update_with_file_announcement_message(message, peer)
 
     def send_hi_message_to_multicast_group(self):
         hi = HiMessage(username=settings.ALIAS, port=settings.TCP_PORT)
@@ -64,6 +65,10 @@ class TrummaDatagramServer(DatagramServer):
 
     def send_bye_message_to_multicast_group(self):
         self.send_message_to_multicast_group(ByeMessage())
+
+    def send_file_announcement_message_to_multicast_group(self, f):
+        self.send_message_to_multicast_group(FileMessage(
+            f.sha_hash, f.ttl, f.length, f.name, f.meta))
 
     def send_message_to_multicast_group(self, message):
         data = message.data

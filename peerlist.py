@@ -121,16 +121,19 @@ def find_peer_by_address(query):
 
 
 def share_files_from_folder(folder):
+    shared = []
     for f in os.listdir(folder):
         file_path = os.path.join(folder, f)
-        share_file(file_path)
+        shared += share_file(file_path)
+    return shared
 
 
 def share_file(f):
+    shared = []
     if os.path.isfile(f):
         new_file = AvailableFile(None)
         new_file.length = os.path.getsize(f)
-        new_file.ttl = float("inf")
+        new_file.ttl = -1
         new_file.name = f
         new_file.local_path = f
         new_file.sha_hash = new_file.calculate_sha_hash()
@@ -140,7 +143,9 @@ def share_file(f):
                 shared_already = True
         if not shared_already:
             peerlist.self_peer.files.append(new_file)
+            shared.append(new_file)
+        return shared
     elif os.path.isdir(f):
-        share_files_from_folder(f)
+        return share_files_from_folder(f)
     else:
         raise EOFError('No such file or directory')
