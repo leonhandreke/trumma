@@ -78,6 +78,7 @@ class AvailableFile(object):
             h.update(data)
         return h.hexdigest()
 
+
 def findpeer(query):
     peer = find_peer_by_name(query)
     if peer:
@@ -133,7 +134,12 @@ def share_file(f):
         new_file.name = f
         new_file.local_path = f
         new_file.sha_hash = new_file.calculate_sha_hash()
-        peerlist.self_peer.files.append(new_file)
+        shared_already = False
+        for s in peerlist.self_peer.files:
+            if s.sha_hash == new_file.sha_hash:
+                shared_already = True
+        if not shared_already:
+            peerlist.self_peer.files.append(new_file)
     elif os.path.isdir(f):
         share_files_from_folder(f)
     else:
