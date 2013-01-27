@@ -62,7 +62,7 @@ def run_ui(ipv4_datagram_server):
             elif cmd.startswith("get file ") and len(scmd) == 4:
                 peer = findpeer(' '.join(scmd[3:]))
                 matching_files = filter(lambda f: (scmd[2] in f.sha_hash or
-                    scmd[2] in f.name, peer.files))
+                    scmd[2] in f.name), peer.files)
                 if len(matching_files) > 1:
                     raise UserInputException("Multiple matching files")
                 elif len(matching_files) == 0:
@@ -82,9 +82,26 @@ def run_ui(ipv4_datagram_server):
                     newly_shared = share_file(scmd[1])
                     for f in newly_shared:
                         print("added to share: " + f.name)
-                        ipv4_datagram_server.send_file_announcement_message_to_multicast_group(f)
+                        ipv4_datagram_server. \
+                        send_file_announcement_message_to_multicast_group(f)
                 except EOFError:
                     print("No such file or directory " + scmd[1])
+            elif cmd == "announce all":
+                for f in peerlist.self_peer.files:
+                    ipv4_datagram_server. \
+                    send_file_announcement_message_to_multicast_group(f)
+            elif cmd.startswith("announce "):
+                matching_files = filter(lambda f: (scmd[1] in f.sha_hash
+                    or scmd[1] in f.name), peerlist.self_peer.files)
+                if len(matching_files) > 1:
+                    raise UserInputException("Multiple matching files")
+                elif len(matching_files) == 0:
+                    raise UserInputException("No matching file")
+                else:
+                    ipv4_datagram_server. \
+                    send_file_announcement_message_to_multicast_group(
+                        matching_files[0])
+
             elif cmd == "exit" or cmd == "quit" or cmd == "q":
                 ipv4_datagram_server.send_bye_message_to_multicast_group()
                 break
