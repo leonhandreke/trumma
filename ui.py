@@ -6,11 +6,12 @@ from gevent import monkey
 from gevent import Greenlet
 
 import settings
-from peerlist import peerlist, findpeer
+from peerlist import peerlist, findpeer, share_file, share_files_from_folder
 from message import HiMessage
 from connection import get_file_list, get_file
 
 monkey.patch_sys()
+
 
 #def run_ui(ipv4_datagram_server, ipv6_datagram_server):
     #ipv6_datagram_server = ipv6_datagram_server
@@ -69,13 +70,16 @@ def run_ui(ipv4_datagram_server):
                     download_task = Greenlet.spawn(get_file, peer, matching_files[0])
                     # wait until completion
                     download_task.join()
-
-
             elif cmd.startswith("find peers"):
                 ipv4_datagram_server.send_hi_message_to_multicast_group()
                 #ipv6_datagram_server.send_hi_message_to_multicast_group()
                 print("finding peers … please check peerlist to " +
                     "see if somebody answered")
+            elif cmd.startswith("share folder ") or cmd.startswith("share file "):
+                try:
+                    share_file(scmd[2])
+                except EOFError:
+                    print("No such file or directory " + scmd[2])
             elif cmd == "exit" or cmd == "quit" or cmd == "q":
                 ipv4_datagram_server.send_bye_message_to_multicast_group()
                 break

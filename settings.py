@@ -12,5 +12,6 @@ IPV6_MULTICAST_GROUP = "ff05::7171"
 
 ALIAS = getpass.getuser()
 DOWNLOAD_PATH = "/tmp/trumma"
+SHARE = ["/tmp/trumma", "/tmp/trumma2"]
 
 DEBUG = False

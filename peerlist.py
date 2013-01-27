@@ -1,5 +1,6 @@
 import hashlib
 import datetime
+import os
 
 import gevent
 
@@ -116,3 +117,24 @@ def find_peer_by_address(query):
         return
     else:
         return(peers[0])
+
+
+def share_files_from_folder(folder):
+    for f in os.listdir(folder):
+        file_path = os.path.join(folder, f)
+        share_file(file_path)
+
+
+def share_file(f):
+    if os.path.isfile(f):
+        new_file = AvailableFile(None)
+        new_file.length = os.path.getsize(f)
+        new_file.ttl = float("inf")
+        new_file.name = f
+        new_file.local_path = f
+        new_file.sha_hash = new_file.calculate_sha_hash()
+        peerlist.self_peer.files.append(new_file)
+    elif os.path.isdir(f):
+        share_files_from_folder(f)
+    else:
+        raise EOFError('No such file or directory')

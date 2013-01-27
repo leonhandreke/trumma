@@ -1,6 +1,5 @@
 # -*- coding: utf8 -*-
 import struct
-import os
 import pdb
 import sys
 reload(sys)
@@ -15,7 +14,7 @@ import settings
 from datagram import TrummaDatagramServer
 from connection import handle_connection
 from ui import run_ui
-from peerlist import Peer, AvailableFile
+from peerlist import Peer, AvailableFile, share_files_from_folder
 from peerlist import decrement_other_peers_files_ttl, peerlist
 
 peerlist.self_peer = Peer(settings.OWN_IP)
@@ -23,17 +22,11 @@ peerlist.self_peer.tcp_port = settings.TCP_PORT
 peerlist.self_peer.alias = settings.ALIAS
 peerlist.append(peerlist.self_peer)
 
+
 # build own file list
-for f in os.listdir(settings.DOWNLOAD_PATH):
-    file_path = os.path.join(settings.DOWNLOAD_PATH, f)
-    if os.path.isfile(file_path):
-        new_file = AvailableFile(None)
-        new_file.length = os.path.getsize(file_path)
-        new_file.ttl = float("inf")
-        new_file.name = f
-        new_file.local_path = file_path
-        new_file.sha_hash = new_file.calculate_sha_hash()
-        peerlist.self_peer.files.append(new_file)
+for s in settings.SHARE:
+    share_files_from_folder(s)
+
 
 # decrement the TTL of all other peer's files every second
 Greenlet.spawn(decrement_other_peers_files_ttl)
