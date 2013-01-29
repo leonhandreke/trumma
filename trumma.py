@@ -31,14 +31,16 @@ for s in settings.SHARE:
 # decrement the TTL of all other peer's files every second
 Greenlet.spawn(decrement_other_peers_files_ttl)
 
-
-ipv4_connection_server = StreamServer((settings.BIND_INTERFACE_V4,
+# On Linux, binding TCP to in6addr_any will also listen on IPv4
+connection_server = StreamServer((settings.IPV6_BIND_INTERFACE,
     settings.TCP_PORT), handle_connection)
-ipv4_connection_server.start()
+connection_server.family = socket.AF_INET6
+connection_server.init_socket()
+connection_server.start()
 
 # Set up the v4 UDP server
 ipv4_datagram_server = datagram.TrummaDatagramServer(settings.IPV4_MULTICAST_GROUP,
-        (settings.BIND_INTERFACE_V4, settings.UDP_PORT))
+        (settings.IPV4_BIND_INTERFACE, settings.UDP_PORT))
 
 # Modify some private (?) members to make it join the multicast group
 ipv4_datagram_server.init_socket()
@@ -50,7 +52,7 @@ ipv4_datagram_server.start()
 
 # Set up the v6 UDP server
 ipv6_datagram_server = datagram.TrummaDatagramServer(settings.IPV6_MULTICAST_GROUP,
-        (settings.BIND_INTERFACE_V6, settings.UDP_PORT))
+        (settings.IPV6_BIND_INTERFACE, settings.UDP_PORT))
 ipv6_datagram_server.family = socket.AF_INET6
 ipv6_datagram_server.init_socket()
 ipv6_datagram_server.socket.setsockopt(socket.IPPROTO_IPV6,
@@ -66,6 +68,6 @@ gevent.sleep(0.2)
 datagram.send_hi_message_to_multicast_group()
 Greenlet.spawn(run_ui()).join()
 
-ipv4_connection_server.stop()
+connection_server.stop()
 ipv4_datagram_server.stop()
 ipv6_datagram_server.stop()
