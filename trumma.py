@@ -11,7 +11,7 @@ from gevent.server import StreamServer, DatagramServer
 from gevent import Greenlet
 
 import settings
-from datagram import TrummaDatagramServer
+import datagram
 from connection import handle_connection
 from ui import run_ui
 from peerlist import Peer, AvailableFile, share_files_from_folder
@@ -37,34 +37,35 @@ ipv4_connection_server = StreamServer((settings.BIND_INTERFACE_V4,
 ipv4_connection_server.start()
 
 # Set up the v4 UDP server
-ipv4_datagram_server = TrummaDatagramServer((settings.BIND_INTERFACE_V4,
-    settings.UDP_PORT))
+ipv4_datagram_server = datagram.TrummaDatagramServer(settings.IPV4_MULTICAST_GROUP,
+        (settings.BIND_INTERFACE_V4, settings.UDP_PORT))
 
 # Modify some private (?) members to make it join the multicast group
 ipv4_datagram_server.init_socket()
 ipv4_datagram_server.socket.setsockopt(socket.IPPROTO_IP,
         socket.IP_ADD_MEMBERSHIP,
-        socket.inet_aton(settings.IPV4_MULTICAST_GROUP) +
+        socket.inet_pton(socket.AF_INET, settings.IPV4_MULTICAST_GROUP) +
             struct.pack('=I', socket.INADDR_ANY))
 ipv4_datagram_server.start()
 
-## Set up the v6 UDP server
-#ipv6_datagram_server = TrummaDatagramServer((settings.BIND_INTERFACE,
-    #settings.UDP_PORT))
+# Set up the v6 UDP server
+ipv6_datagram_server = datagram.TrummaDatagramServer(settings.IPV6_MULTICAST_GROUP,
+        (settings.BIND_INTERFACE_V6, settings.UDP_PORT))
+ipv6_datagram_server.family = socket.AF_INET6
+ipv6_datagram_server.init_socket()
+ipv6_datagram_server.socket.setsockopt(socket.IPPROTO_IPV6,
+        socket.IPV6_JOIN_GROUP,
+        socket.inet_pton(socket.AF_INET6, settings.IPV6_MULTICAST_GROUP) +
+            struct.pack('=I', 0))
+ipv6_datagram_server.start()
 
-## Modify some private (?) members to make it join the multicast group
-#ipv6_datagram_server.init_socket()
-#ipv6_datagram_server.socket.setsockopt(socket.IPPROTO_IP,
-        #socket.IP_ADD_MEMBERSHIP,
-        #socket.inet_aton(settings.IPV6_MULTICAST_GROUP) +
-            #struct.pack('=I', socket.INADDR_ANY))
-#ipv6_datagram_server.start()
-
-#Greenlet.spawn(run_ui(ipv4_datagram_server, ipv6_datagram_server)).join()
+datagram.datagram_servers.append(ipv4_datagram_server)
+datagram.datagram_servers.append(ipv6_datagram_server)
 
 gevent.sleep(0.2)
-ipv4_datagram_server.send_hi_message_to_multicast_group()
-Greenlet.spawn(run_ui(ipv4_datagram_server)).join()
+datagram.send_hi_message_to_multicast_group()
+Greenlet.spawn(run_ui()).join()
 
 ipv4_connection_server.stop()
 ipv4_datagram_server.stop()
+ipv6_datagram_server.stop()

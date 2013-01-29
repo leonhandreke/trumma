@@ -9,16 +9,12 @@ import settings
 from peerlist import peerlist, findpeer, share_file, share_files_from_folder
 from message import HiMessage
 from connection import get_file_list, get_file
+import datagram
 
 monkey.patch_sys()
 
 
-#def run_ui(ipv4_datagram_server, ipv6_datagram_server):
-    #ipv6_datagram_server = ipv6_datagram_server
-    #ipv4_datagram_server = ipv4_datagram_server
-def run_ui(ipv4_datagram_server):
-    ipv4_datagram_server = ipv4_datagram_server
-
+def run_ui():
     while True:
         try:
             cmd = raw_input("> ")
@@ -73,8 +69,7 @@ def run_ui(ipv4_datagram_server):
                     # wait until completion
                     download_task.join()
             elif cmd.startswith("find peers"):
-                ipv4_datagram_server.send_hi_message_to_multicast_group()
-                #ipv6_datagram_server.send_hi_message_to_multicast_group()
+                datagram.send_hi_message_to_multicast_group()
                 print("finding peers … please check peerlist to " +
                     "see if somebody answered")
             elif cmd.startswith("share "):
@@ -82,14 +77,12 @@ def run_ui(ipv4_datagram_server):
                     newly_shared = share_file(scmd[1])
                     for f in newly_shared:
                         print("added to share: " + f.name)
-                        ipv4_datagram_server. \
-                        send_file_announcement_message_to_multicast_group(f)
+                        datagram.send_file_announcement_message_to_multicast_group(f)
                 except EOFError:
                     print("No such file or directory " + scmd[1])
             elif cmd == "announce all":
                 for f in peerlist.self_peer.files:
-                    ipv4_datagram_server. \
-                    send_file_announcement_message_to_multicast_group(f)
+                    datagram.send_file_announcement_message_to_multicast_group(f)
             elif cmd.startswith("announce "):
                 matching_files = filter(lambda f: (scmd[1] in f.sha_hash
                     or scmd[1] in f.name), peerlist.self_peer.files)
@@ -98,12 +91,11 @@ def run_ui(ipv4_datagram_server):
                 elif len(matching_files) == 0:
                     raise UserInputException("No matching file")
                 else:
-                    ipv4_datagram_server. \
-                    send_file_announcement_message_to_multicast_group(
+                    datagram.send_file_announcement_message_to_multicast_group(
                         matching_files[0])
 
             elif cmd == "exit" or cmd == "quit" or cmd == "q":
-                ipv4_datagram_server.send_bye_message_to_multicast_group()
+                datagram.send_bye_message_to_multicast_group()
                 break
             elif cmd == "help" or cmd == "h":
                 #todo: implement

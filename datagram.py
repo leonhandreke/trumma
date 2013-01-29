@@ -6,8 +6,27 @@ from message import create_message, HiMessage, YoMessage, ByeMessage
 from message import FileMessage
 import settings
 
+datagram_servers = []
+
+def send_hi_message_to_multicast_group():
+    hi = HiMessage(username=settings.ALIAS, port=settings.TCP_PORT)
+    for s in datagram_servers:
+        s.send_message_to_multicast_group(hi)
+
+def send_bye_message_to_multicast_group():
+    for s in datagram_servers:
+        s.send_message_to_multicast_group(ByeMessage())
+
+def send_file_announcement_message_to_multicast_group(f):
+    for s in datagram_servers:
+        s.send_message_to_multicast_group(FileMessage(
+            f.sha_hash, f.ttl, f.length, f.name, f.meta))
 
 class TrummaDatagramServer(DatagramServer):
+    def __init__(self, multicast_group, *args, **kwargs):
+        self.multicast_group = multicast_group
+        super(TrummaDatagramServer, self).__init__(*args, **kwargs)
+
     def handle(self, data, address):
         message = create_message(data)
         if message is None:
@@ -59,18 +78,8 @@ class TrummaDatagramServer(DatagramServer):
         peer = find_peer_by_address(address)
         peerlist.update_with_file_announcement_message(message, peer)
 
-    def send_hi_message_to_multicast_group(self):
-        hi = HiMessage(username=settings.ALIAS, port=settings.TCP_PORT)
-        self.send_message_to_multicast_group(hi)
-
-    def send_bye_message_to_multicast_group(self):
-        self.send_message_to_multicast_group(ByeMessage())
-
-    def send_file_announcement_message_to_multicast_group(self, f):
-        self.send_message_to_multicast_group(FileMessage(
-            f.sha_hash, f.ttl, f.length, f.name, f.meta))
 
     def send_message_to_multicast_group(self, message):
         data = message.data
-        self.sendto(data, (settings.IPV4_MULTICAST_GROUP, settings.UDP_PORT))
+        self.sendto(data, (self.multicast_group, settings.UDP_PORT))
 
