@@ -1,0 +1,791 @@
+commit 6cc99f4714328c7f750ff01b09ff896eadf02c3e
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Sun Jan 27 21:03:33 2013 +0100
+
+    implement trigger for file announcements
+
+ ui.py |   21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
+
+commit c3e6dd57ea2e4e83c3b1308fe74319993edf73d3
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Sun Jan 27 20:50:06 2013 +0100
+
+    implement file announcement messages being send on adding files to share
+
+ datagram.py |    9 +++++++--
+ peerlist.py |   11 ++++++++---
+ ui.py       |   15 ++++++++++-----
+ 3 files changed, 25 insertions(+), 10 deletions(-)
+
+commit e295c260faeae9263fc0f4e8ca91f2d0e4cc0416
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Sun Jan 27 20:14:36 2013 +0100
+
+    fix sharing the same file (== same hash) multiple times
+
+ peerlist.py |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+commit d5227f0c4f94839f6f5e41f3b1e436ef33e0fd98
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Sun Jan 27 20:05:54 2013 +0100
+
+    implement adding files and folders to share while trumma is running
+
+ peerlist.py |   22 ++++++++++++++++++++++
+ settings.py |    1 +
+ trumma.py   |   17 +++++------------
+ ui.py       |   10 +++++++---
+ 4 files changed, 35 insertions(+), 15 deletions(-)
+
+commit 31088602a5b1e692e4457efb1e9baeb637162345
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Sat Jan 26 16:59:03 2013 +0100
+
+    Set utf-8 as the default encoding
+
+ trumma.py |    3 +++
+ 1 file changed, 3 insertions(+)
+
+commit 2623404a6299a8bb55ded995a9d658325e1c3e79
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Sat Jan 26 16:55:39 2013 +0100
+
+    Don't put full path in file names
+
+ trumma.py |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 3dbed3663b7cf991e6bd0a9f2276211015c099e2
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Sat Jan 26 16:51:55 2013 +0100
+
+    Implement file transfer server
+
+ connection.py |   23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
+
+commit e131084a4a38afe4f27ac19a20cd685a2a8690a3
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Sat Jan 26 16:44:40 2013 +0100
+
+    Revert "Fix UTF-8 decoding"
+    
+    This reverts commit e61bcc59bb64fb4f8f633ba7d95ae6c06fa52f14.
+
+ parser.py |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit e61bcc59bb64fb4f8f633ba7d95ae6c06fa52f14
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Sat Jan 26 16:42:38 2013 +0100
+
+    Fix UTF-8 decoding
+
+ parser.py |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 968ff478b957141020661cb7e2f908a2f4ac2add
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Sat Jan 26 16:39:10 2013 +0100
+
+    Fix variable typo
+
+ peerlist.py |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit b7a706e05eb389b581d18fc441b560cfe0ade15e
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Sat Jan 26 16:38:00 2013 +0100
+
+    Strip off message separator
+
+ parser.py |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+commit 40185a47b949b3c4d3b6e8a162f6a84337676bd9
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Sat Jan 26 16:21:39 2013 +0100
+
+    Add message separator when building messages
+
+ parser.py |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit bf777a92428ec0e2842f8c215f08b056a975361f
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Sat Jan 26 16:15:05 2013 +0100
+
+    minor fix - sleeping time betweeen subscribing to multicast group and
+    sending first package
+
+ trumma.py |    1 +
+ 1 file changed, 1 insertion(+)
+
+commit 2c2e4a552d3c834aa6497db0a8a04edc02a671ed
+Merge: 9570c5f 5cc63da
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Sat Jan 26 16:00:40 2013 +0100
+
+    Merge branch 'master' of github.com:leonhandreke/trumma
+
+commit 9570c5fdae800d23a17d3d78c50c89ab0857104b
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Sat Jan 26 16:00:10 2013 +0100
+
+    fix not answering to first hfix not answering to first hi
+
+ datagram.py |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+commit 5cc63da2e48bd79dbd968ae35b7ccd7d84e9c463
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Sat Jan 26 15:55:46 2013 +0100
+
+    Improve file announcement message handling
+
+ connection.py |    4 ++--
+ datagram.py   |    5 ++++-
+ peerlist.py   |    6 +++---
+ 3 files changed, 9 insertions(+), 6 deletions(-)
+
+commit 82b101bbd5a5bd140e322dcad1670feaa859aa45
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Sat Jan 26 15:48:50 2013 +0100
+
+    minor fixeminor fixess
+
+ datagram.py |   13 ++++++-------
+ ui.py       |   18 +++++++++---------
+ 2 files changed, 15 insertions(+), 16 deletions(-)
+
+commit 162714b10917613011dfeff6bbb6ed58b62b62e8
+Merge: 73f6763 39e8fb3
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Sat Jan 26 15:43:20 2013 +0100
+
+    Merge branch 'master' of github.com:leonhandreke/trumma
+
+commit 39e8fb36c97fcb827b35db3697c9f1c37bb0b43c
+Merge: 98dcc06 1e0bb5e
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Sat Jan 26 15:43:08 2013 +0100
+
+    Merge branch 'master' of github.com:leonhandreke/trumma
+
+commit 98dcc06fa58c95421237fd1f6aff01343a2d7efa
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Sat Jan 26 15:42:44 2013 +0100
+
+    Implement get filelist
+
+ connection.py |   27 +++++++++++++++++++++++++--
+ datagram.py   |    2 ++
+ 2 files changed, 27 insertions(+), 2 deletions(-)
+
+commit 73f6763a87bc28faed431e1a8273b04529f62720
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Sat Jan 26 15:42:24 2013 +0100
+
+    implement handling of bye message
+
+ datagram.py |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+commit 1e0bb5ec74bb88375d4a890b458331178b017fde
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Sat Jan 26 15:35:45 2013 +0100
+
+    fixed sending yo packet on receiving hi packet from myself
+
+ datagram.py |    7 ++++---
+ trumma.py   |    1 +
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
+commit 6375c9d82a9b7ea5d69cd39a05b126743b65c92d
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Sat Jan 26 15:33:25 2013 +0100
+
+    Merge fixes
+
+ connection.py |   62 +++++++++++++++++++++++++++++++++++++++++++++++----------
+ datagram.py   |   15 +-------------
+ message.py    |    7 ++++++-
+ peerlist.py   |   27 +++++++++++++++++++------
+ trumma.py     |    9 +++------
+ ui.py         |    8 ++++++--
+ 6 files changed, 89 insertions(+), 39 deletions(-)
+
+commit bff55ed812f91be3841ed6ae244192b3a9c3c307
+Merge: 12931fc c7b84b0
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Sat Jan 26 15:21:08 2013 +0100
+
+    Merge branch 'master' of github.com:leonhandreke/trumma
+    
+    Conflicts:
+    	ui.py
+
+commit c7b84b0a238431d01a911e9bb9d134733db3e5d9
+Merge: 37a3e32 585a554
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Fri Jan 25 02:11:37 2013 +0100
+
+    Merge branch 'master' of github.com:leonhandreke/trumma
+
+commit 37a3e32f336ee762d35dac8762ba95a922ca8961
+Merge: 061f8e8 850f7e2
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Fri Jan 25 02:10:45 2013 +0100
+
+    Merge branch 'master' of github.com:leonhandreke/trumma
+    
+    Conflicts:
+    	datagram.py
+
+commit 585a554a4f2f65ca28cd28225369055acf7eae22
+Author: Kevin Zuber <uKev@knet.eu>
+Date:   Fri Jan 25 02:09:02 2013 +0100
+
+    [datagram] add fixme
+
+ datagram.py |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 061f8e8f627d2af1294fb70d2daa68aff840fdf6
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Fri Jan 25 02:07:43 2013 +0100
+
+    implemented handling of yo messages, changed self peer to local ip
+    address intead of 127.0.0.1
+
+ datagram.py |   25 +++++++++++++------------
+ peerlist.py |   29 ++++++++++++++++++++++++++---
+ settings.py |    1 +
+ trumma.py   |    6 ++++--
+ ui.py       |    2 +-
+ 5 files changed, 45 insertions(+), 18 deletions(-)
+
+commit 850f7e2d2c4374347b77ee30d1e87dbad1bf1726
+Author: Kevin Zuber <uKev@knet.eu>
+Date:   Fri Jan 25 02:06:55 2013 +0100
+
+    [datagram] make usage of new message interface
+
+ datagram.py |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+commit b9a05a75ac175437b93ca29200de5e3474426409
+Author: Kevin Zuber <uKev@knet.eu>
+Date:   Fri Jan 25 01:59:32 2013 +0100
+
+    [parser] add tests for new interface
+
+ message.py |   20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+commit 7508294e7d1a2102cf9188c90d8bd73ec42b2c8b
+Author: Kevin Zuber <uKev@knet.eu>
+Date:   Fri Jan 25 01:58:35 2013 +0100
+
+    [parser] improve message interface
+
+ message.py |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+
+commit 77706f9c6cd18341eb07bb7a55018438f8ef2911
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Fri Jan 25 01:06:25 2013 +0100
+
+    fixed problem with handling yo message
+
+ datagram.py |   19 ++++++++++---------
+ peerlist.py |   18 ++++++++++++++++++
+ ui.py       |   20 +-------------------
+ 3 files changed, 29 insertions(+), 28 deletions(-)
+
+commit b31ef5cebc929b17f16035a89f5ab3ba840aec69
+Merge: a768925 bc437b0
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Fri Jan 25 00:56:20 2013 +0100
+
+    Merge branch 'master' of github.com:leonhandreke/trumma
+
+commit a76892511fd9a3e5710a3125a162381baab030f1
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Fri Jan 25 00:55:39 2013 +0100
+
+    fix problem creating a message and fix problem handling incoming hi
+    messages
+
+ datagram.py |   11 ++++++++---
+ settings.py |    2 +-
+ 2 files changed, 9 insertions(+), 4 deletions(-)
+
+commit bc437b0918f039ae1e6995a225d5db4f0224b687
+Author: Kevin Zuber <uKev@knet.eu>
+Date:   Fri Jan 25 00:55:36 2013 +0100
+
+    [parser] correct pep8 line length
+
+ parser.py |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 6f0c371f79ea71d7b95f712242372db26ddd2684
+Author: Kevin Zuber <uKev@knet.eu>
+Date:   Fri Jan 25 00:54:15 2013 +0100
+
+    [parser] add type checking
+
+ parser.py |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+commit 9e03de4cdcee4b10457e8ae402c7736c7fb9d952
+Author: Kevin Zuber <uKev@knet.eu>
+Date:   Fri Jan 25 00:25:53 2013 +0100
+
+    [parser] fix inconsistency introduced with rename
+
+ parser.py |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 2de44204a8db52686e092a943a4301103c35ef55
+Author: Kevin Zuber <uKev@knet.eu>
+Date:   Fri Jan 25 00:23:01 2013 +0100
+
+    Revert "fix message.py to work with the parser, also disable debug mode"
+    
+    This reverts commit 7af55a94698d016611a4852160ad9b0e05caaa60.
+
+ message.py  |    6 +++---
+ settings.py |    2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 7af55a94698d016611a4852160ad9b0e05caaa60
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Thu Jan 24 23:56:00 2013 +0100
+
+    fix message.py to work with the parser, also disable debug mode
+
+ message.py  |    6 +++---
+ settings.py |    2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+commit b343388e92781ac877f7e1879db625c930c1525b
+Merge: bd1cf8b b80243c
+Author: Kevin Zuber <uKev@knet.eu>
+Date:   Wed Jan 23 20:27:14 2013 +0100
+
+    [merge] resolve conflicts
+
+commit bd1cf8b5c5b0f3114c44e6bccd27652847b58436
+Author: Kevin Zuber <uKev@knet.eu>
+Date:   Wed Jan 23 20:21:06 2013 +0100
+
+    [parser] add doctest
+
+ parser.py |   48 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
+
+commit dfe1d3de26c084392b0b9eb81d5ffe328271f1c9
+Author: Kevin Zuber <uKev@knet.eu>
+Date:   Wed Jan 23 20:14:23 2013 +0100
+
+    [parser] fix error in disabled debug mode
+
+ parser.py |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+commit 08f682df3acf7101857ac1885dc271fef74cb383
+Author: Kevin Zuber <uKev@knet.eu>
+Date:   Wed Jan 23 19:53:50 2013 +0100
+
+    [parser] fix conversion
+
+ parser.py |   26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
+
+commit 12931fc2e9974ce102da32f2591cc70ce1a1c2e8
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Wed Jan 23 16:17:07 2013 +0100
+
+    Implement get file in UI
+
+ ui.py |   19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
+
+commit 25cf9a8b15ce21c5d248bf7cfcfac18c2e967159
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Wed Jan 23 16:11:15 2013 +0100
+
+    Use exceptions for invalid user input in UI
+
+ ui.py |   31 +++++++++++++++++--------------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
+
+commit 0ea8d9890ec524dc657cc2d4de7110fa8bb9209d
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Wed Jan 23 16:02:15 2013 +0100
+
+    Use Greenlet.spawn for background tasks in UI
+
+ ui.py |   29 ++++++++++-------------------
+ 1 file changed, 10 insertions(+), 19 deletions(-)
+
+commit b80243c7006b3ad66d49143ef232082631b1ce16
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Wed Jan 23 12:46:13 2013 +0100
+
+    Revert "Correct type spelling"
+    
+    This reverts commit e7049ba0fae59aa3e35899724152af0a116ba71f.
+
+ message.py |   14 +++++++-------
+ parser.py  |   24 ++++++++++++------------
+ 2 files changed, 19 insertions(+), 19 deletions(-)
+
+commit e7049ba0fae59aa3e35899724152af0a116ba71f
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Wed Jan 23 12:31:07 2013 +0100
+
+    Correct type spelling
+
+ message.py |   14 +++++++-------
+ parser.py  |   24 ++++++++++++------------
+ 2 files changed, 19 insertions(+), 19 deletions(-)
+
+commit f639c05b5ababfff7bca32e7c8bad9d79a455bcd
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Wed Jan 23 12:06:22 2013 +0100
+
+    Correct separator spelling
+
+ parser.py |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+commit 705571a45ed48f32756c5efe1905efe8578f2e61
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Wed Jan 23 11:53:05 2013 +0100
+
+    Listen on all interfaces by default
+
+ settings.py |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit d2c60835969da2998aa51b03c5fbe485f492398a
+Author: Kevin Zuber <uKev@knet.eu>
+Date:   Wed Jan 23 11:00:16 2013 +0100
+
+    add .gitignore
+
+ .gitignore |    2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 66871cb898856962a761749641c3637c4fbef74f
+Author: Kevin Zuber <uKev@knet.eu>
+Date:   Wed Jan 23 10:58:35 2013 +0100
+
+    [parser] add message parser
+
+ datagram.py |   18 +++---
+ message.py  |  123 +++++++++++++++++++++++++++++++++++------
+ parser.py   |  178 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ settings.py |    2 +
+ 4 files changed, 290 insertions(+), 31 deletions(-)
+
+commit 5316fae8d34ae3af7ea73952466c7064639e1f72
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Tue Jan 22 17:28:37 2013 +0100
+
+    further implement ui, start implementing get file and get filelist
+
+ connection.py |   10 +++++++++-
+ datagram.py   |    2 +-
+ settings.py   |    4 +++-
+ trumma.py     |   30 ++++++++++++++++--------------
+ ui.py         |   22 ++++++++++++----------
+ 5 files changed, 41 insertions(+), 27 deletions(-)
+
+commit 5f6412de0144eab41b4c0c41176922a398fac428
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Tue Jan 22 00:12:54 2013 +0100
+
+    implement ipv6 basics, get filelist --> v6 breaks everything
+
+ connection.py |    5 ++++-
+ settings.py   |    2 +-
+ trumma.py     |   17 +++++++++++++++--
+ ui.py         |   11 ++++++++---
+ 4 files changed, 28 insertions(+), 7 deletions(-)
+
+commit 58596108855e4cc7291bc917fa24f822de6c894b
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Mon Jan 21 23:59:35 2013 +0100
+
+    implement sending bye message on quit
+
+ datagram.py |    3 +++
+ message.py  |    5 +++++
+ ui.py       |    1 +
+ 3 files changed, 9 insertions(+)
+
+commit d02a8b8453c4ff981ef6ee9e69ef80643983bb77
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Mon Jan 21 23:57:03 2013 +0100
+
+    moves sending of hi message completetly to datagram server
+
+ datagram.py |    3 +++
+ ui.py       |    8 +++++---
+ 2 files changed, 8 insertions(+), 3 deletions(-)
+
+commit 42785b73dca49e292ca9d27b299ca02c9f67257b
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Mon Jan 21 21:49:50 2013 +0100
+
+    minor code formatting
+
+ connection.py |    2 ++
+ datagram.py   |    3 ++-
+ parser.py     |    6 ++++--
+ peerlist.py   |    4 ++++
+ ui.py         |    3 ++-
+ 5 files changed, 14 insertions(+), 4 deletions(-)
+
+commit 65c0900d779b40fe5eb2f91369c1417a5ec362d6
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Mon Jan 21 21:47:26 2013 +0100
+
+    implement find peers command - sending packet now
+
+ datagram.py |    1 +
+ message.py  |   16 ++++++++++++----
+ parser.py   |    1 +
+ settings.py |    3 +++
+ trumma.py   |   16 ++++++++++------
+ ui.py       |   18 +++++++++++++-----
+ 6 files changed, 40 insertions(+), 15 deletions(-)
+
+commit 008ce446ff33805457a9a45a79d4cf37546e58cd
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Fri Jan 18 21:13:01 2013 +0100
+
+    restructure code in ui
+
+ ui.py |   47 +++++++++++++++++++++++++++++------------------
+ 1 file changed, 29 insertions(+), 18 deletions(-)
+
+commit b02fd3f1a3aeb89b43470ce12074f9dede965e88
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Fri Jan 18 20:35:35 2013 +0100
+
+    further implement list files in ui
+
+ trumma.py |    3 ++-
+ ui.py     |    5 +++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
+commit da272b15291c4af14337c18e30ad286d2ea1e547
+Merge: a8b04b2 6b8410e
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Fri Jan 18 17:25:41 2013 +0100
+
+    Merge branch 'master' of github.com:leonhandreke/trumma
+
+commit a8b04b209e954ebe24c67196c14815661cd89e86
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Fri Jan 18 17:25:14 2013 +0100
+
+    implement list file command in ui
+
+ ui.py |   44 +++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 33 insertions(+), 11 deletions(-)
+
+commit 6b8410efc617f8c7bcdd1e025ef4f25bb670d2e3
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Thu Jan 17 13:12:47 2013 +0100
+
+    Implement decrement of TTL
+
+ datagram.py |    2 +-
+ peerlist.py |    9 +++++++++
+ trumma.py   |   20 +++++++++++---------
+ 3 files changed, 21 insertions(+), 10 deletions(-)
+
+commit db4caba45fca9447dd5e7240f26f8c64e1dbbc8f
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Thu Jan 17 12:32:24 2013 +0100
+
+    Implement datagram message handling
+
+ datagram.py |   79 +++++++++++++++++++++++++++++++++++++++++++++--------------
+ message.py  |   24 ++++++++++++++----
+ parser.py   |    2 +-
+ peerlist.py |   22 ++++++++---------
+ trumma.py   |    8 +++---
+ 5 files changed, 97 insertions(+), 38 deletions(-)
+
+commit b5cdf92090e5dc7e007322e48798e445136905fe
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Wed Jan 16 22:35:01 2013 +0100
+
+    Use gevent servers and make peerlist work
+
+ connection.py |   10 ++--------
+ datagram.py   |    3 +++
+ peerlist.py   |    5 +++++
+ trumma.py     |   43 +++++++++++++++++++++----------------------
+ ui.py         |    7 +++++--
+ 5 files changed, 36 insertions(+), 32 deletions(-)
+
+commit 2107ed1a2677cf553e6eb5f15d94464050f9751c
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Wed Jan 16 20:36:47 2013 +0100
+
+    Make ui thread non-blocking by monkey-patching sys
+
+ ui.py |    2 ++
+ 1 file changed, 2 insertions(+)
+
+commit cf64da01e70b3780351f996312dd786ee0f504c2
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Wed Jan 16 13:15:24 2013 +0100
+
+    Fix UI EOF input
+
+ ui.py |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit ed1a3237fd33e0ebe11918e401b2d0a84450696f
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Wed Jan 16 13:07:18 2013 +0100
+
+    Fix whitespace
+
+ ui.py |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit eab20e7bd28f5596ccae727a73f8994e6aac3547
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Wed Jan 16 13:05:00 2013 +0100
+
+    Fix ui.py indentation
+
+ ui.py |   62 +++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 31 insertions(+), 31 deletions(-)
+
+commit 7fe18ac124d4f1e2ee6ae592d199a11fac7400af
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Wed Jan 16 12:49:17 2013 +0100
+
+    implement gui stuff
+
+ ui.py |   71 ++++++++++++++++++++++++++++-------------------------------------
+ 1 file changed, 31 insertions(+), 40 deletions(-)
+
+commit 016605cb62287c1f045ff74f226d196b93858ae2
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Wed Jan 16 12:57:21 2013 +0100
+
+    Correct README
+
+ README.md        |    2 +-
+ requirements.txt |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit e41a44de47472942f1b5eee47e28be65b5d3f498
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Wed Jan 16 12:47:39 2013 +0100
+
+    Add instructions and requirements for virtualenv
+
+ README.md        |    7 +++++++
+ requirements.txt |    1 +
+ 2 files changed, 8 insertions(+)
+
+commit 91691953ca1513951247784c9ac8aee34a44c008
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Wed Jan 16 12:47:22 2013 +0100
+
+    Switch to gevent
+
+ connection.py |   62 ++++++++------------------------------------
+ datagram.py   |   59 ++++++++++--------------------------------
+ trumma.py     |   37 +++++++++++---------------
+ ui.py         |   80 ++++++++++++++++++++++++++++-----------------------------
+ 4 files changed, 80 insertions(+), 158 deletions(-)
+
+commit 00a605d164711072dbd993f11c2fbd5155eac1cd
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Tue Jan 15 17:59:13 2013 +0100
+
+    implement exit
+
+ ui.py |    2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 5e08e43015809dca2bb877daf341dce509fa528e
+Merge: 3105593 b396a0d
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Tue Jan 15 17:58:16 2013 +0100
+
+    Merge branch 'master' of https://github.com/leonhandreke/trumma
+
+commit b396a0df0fb2453fcabcc0ebcbc027e8b87a48bb
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Tue Jan 15 17:58:06 2013 +0100
+
+    Make file list indexing (hopefully) work
+
+ peerlist.py |    3 ++-
+ trumma.py   |   13 +++++++++----
+ 2 files changed, 11 insertions(+), 5 deletions(-)
+
+commit 310559343e44af3b49eb99880e238149e82e83b0
+Author: Niklas Goerke <niklas@niklasgoerke.de>
+Date:   Tue Jan 15 17:51:56 2013 +0100
+
+    add unimplemented ui commandadd unimplemented ui commandss
+
+ trumma.py |    2 +-
+ ui.py     |   29 ++++++++++++++++++++++++++++-
+ 2 files changed, 29 insertions(+), 2 deletions(-)
+
+commit 7a1fc5aced611537d9970e71225e5f4f2d41ba62
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Tue Jan 15 17:33:22 2013 +0100
+
+    Make listpeers work
+
+ peerlist.py |   31 ++++++++++---------------------
+ ui.py       |    2 +-
+ 2 files changed, 11 insertions(+), 22 deletions(-)
+
+commit ee36569fdad6f9eaeeb80be2433ca781017089ee
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Tue Jan 15 16:19:00 2013 +0100
+
+    Implement a bit more UI and file indexing
+
+ peerlist.py |   30 +++++++++++++++++++++++++++---
+ settings.py |    1 +
+ trumma.py   |   30 ++++++++++++++++++++----------
+ ui.py       |    5 ++++-
+ 4 files changed, 52 insertions(+), 14 deletions(-)
+
+commit e0f3483e059febc4b3f6fd1f39b99144bcfee89c
+Author: Leon Handreke <leonh@ndreke.de>
+Date:   Tue Jan 15 11:04:20 2013 +0100
+
+    Initial commit with non-function framework
+
+ connection.py |   54 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ datagram.py   |   48 ++++++++++++++++++++++++++++++++++++++++++++++++
+ message.py    |    8 ++++++++
+ parser.py     |   15 +++++++++++++++
+ peerlist.py   |   30 ++++++++++++++++++++++++++++++
+ settings.py   |    7 +++++++
+ trumma.py     |   42 ++++++++++++++++++++++++++++++++++++++++++
+ ui.py         |   16 ++++++++++++++++
+ 8 files changed, 220 insertions(+)
