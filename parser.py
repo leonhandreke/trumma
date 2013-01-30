@@ -150,19 +150,19 @@ def _parseType(text):
 
     typ, text = __splitFirstField(text)
 
-    if typ == "Hi":
+    if typ == "HI":
         return _parseHi(text)
-    elif typ == "Yo":
+    elif typ == "YO":
         return _parseYo(text)
-    elif typ == "Bye":
+    elif typ == "BYE":
         return _parseBye(text)
-    elif typ == "File":
+    elif typ == "FILE":
         return _parseFile(text)
-    elif typ == "Get Filelist":
+    elif typ == "GET FILELIST":
         return _parseGetFilelist(text)
-    elif typ == "Get File":
+    elif typ == "GET FILE":
         return _parseGetFile(text)
-    elif typ == "File Transfer Response":
+    elif typ == "FILE TRANSFER RESPONSE":
         return _parseFileTransferResponse(text)
     else:
         print "Warning: Message nicht parsbar."

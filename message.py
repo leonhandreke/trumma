@@ -48,7 +48,7 @@ class HiMessage(Message):
     port = valid port number
     username = string, can be empty
     """
-    typ = "Hi"
+    typ = "HI"
 
     def __init__(self, port, username=""):
         super(HiMessage, self).__init__()
@@ -65,7 +65,7 @@ class YoMessage(Message):
     port = valid port number
     username = string, can be empty
     """
-    typ = "Yo"
+    typ = "YO"
 
     def __init__(self, port, username=""):
         super(YoMessage, self).__init__()
@@ -79,7 +79,7 @@ class YoMessage(Message):
 
 class ByeMessage(Message):
     tcp_port = settings.UDP_PORT
-    typ = "Bye"
+    typ = "BYE"
 
     def __init__(self):
         super(ByeMessage, self).__init__()
@@ -93,7 +93,7 @@ class FileMessage(Message):
     name = "filename.pdf"
     meta = "Some additional things good to know"
     """
-    typ = "File"
+    typ = "FILE"
 
     def __init__(self, sha, ttl, length, name, meta):
         super(FileMessage, self).__init__()
@@ -109,7 +109,7 @@ class FileMessage(Message):
 
 
 class GetFilelistMessage(Message):
-    typ = "Get Filelist"
+    typ = "GET FILELIST"
 
     def __init__(self):
         super(GetFilelistMessage, self).__init__()
@@ -121,7 +121,7 @@ class GetFileMessage(Message):
     offset = start at offset (octet)
     length = length in bytes (octet)
     """
-    typ = "Get File"
+    typ = "GET FILE"
 
     def __init__(self, sha, offset, length):
         super(GetFileMessage, self).__init__()
@@ -144,7 +144,7 @@ class FileTransferResponseMessage(Message):
     TRY_AGAIN_LATER_STATUS = "Try Again Later"
     NEVER_TRY_AGAIN_STATUS = "Never Try Again"
 
-    typ = "File Transfer Response"
+    typ = "FILE TRANSFER RESPONSE"
 
     def __init__(self, status, volume):
         super(FileTransferResponseMessage, self).__init__()
