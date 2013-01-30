@@ -4,7 +4,8 @@ from gevent import socket
 
 import settings
 from peerlist import peerlist, find_peer_by_address
-from message import GetFilelistMessage, GetFileMessage, FileMessage, FileTransferResponseMessage
+from message import GetFilelistMessage, GetFileMessage, FileMessage
+from message import FileTransferResponseMessage
 import parser
 
 
@@ -17,7 +18,7 @@ def handle_connection(conn, addr):
             break
 
     message = parser.parse(message_data)
-    if message == None:
+    if message is None:
         print "Unknown message received in connection to " + addr[0]
         conn.close()
         return
@@ -33,15 +34,18 @@ def handle_connection(conn, addr):
         return
     elif isinstance(message, GetFileMessage):
         try:
-            file_to_send = filter(lambda f: f.sha_hash == message.sha, peerlist.self_peer.files)[0]
+            file_to_send = filter(lambda f: f.sha_hash == message.sha,
+                peerlist.self_peer.files)[0]
         except:
             conn.sendall(parser.build(
-                FileTransferResponseMessage(FileTransferResponseMessage.NEVER_TRY_AGAIN_STATUS, 0)
+                FileTransferResponseMessage(FileTransferResponseMessage
+                    .NEVER_TRY_AGAIN_STATUS, 0)
                 ))
             conn.close()
             return
         conn.sendall(parser.build(
-            FileTransferResponseMessage(FileTransferResponseMessage.OK_STATUS, 0)
+            FileTransferResponseMessage(FileTransferResponseMessage
+                .OK_STATUS, 0)
             ))
 
         f = open(file_to_send.local_path)
@@ -52,6 +56,7 @@ def handle_connection(conn, addr):
             else:
                 conn.close()
                 return
+
 
 def get_file_list(peer):
     sock = socket.create_connection((peer.address, peer.tcp_port))
@@ -72,8 +77,10 @@ def get_file_list(peer):
 
     sock.close()
 
+
 def get_file(peer, f):
-    f.local_path = os.path.join(settings.DOWNLOAD_PATH, os.path.split(f.name)[1])
+    f.local_path = os.path.join(settings.DOWNLOAD_PATH,
+         os.path.split(f.name)[1])
     print "Downloading to " + f.local_path
     if os.path.exists(f.local_path):
         print("File {filename} already exists.".format(filename=f.name))

@@ -39,8 +39,9 @@ connection_server.init_socket()
 connection_server.start()
 
 # Set up the v4 UDP server
-ipv4_datagram_server = datagram.TrummaDatagramServer(settings.IPV4_MULTICAST_GROUP,
-        (settings.IPV4_BIND_INTERFACE, settings.UDP_PORT))
+ipv4_datagram_server = datagram.TrummaDatagramServer(
+    settings.IPV4_MULTICAST_GROUP,
+    (settings.IPV4_BIND_INTERFACE, settings.UDP_PORT))
 
 # Modify some private (?) members to make it join the multicast group
 ipv4_datagram_server.init_socket()
@@ -51,8 +52,9 @@ ipv4_datagram_server.socket.setsockopt(socket.IPPROTO_IP,
 ipv4_datagram_server.start()
 
 # Set up the v6 UDP server
-ipv6_datagram_server = datagram.TrummaDatagramServer(settings.IPV6_MULTICAST_GROUP,
-        (settings.IPV6_BIND_INTERFACE, settings.UDP_PORT))
+ipv6_datagram_server = datagram.TrummaDatagramServer(
+    settings.IPV6_MULTICAST_GROUP,
+    (settings.IPV6_BIND_INTERFACE, settings.UDP_PORT))
 ipv6_datagram_server.family = socket.AF_INET6
 ipv6_datagram_server.init_socket()
 ipv6_datagram_server.socket.setsockopt(socket.IPPROTO_IPV6,

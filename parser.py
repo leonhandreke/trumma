@@ -122,7 +122,7 @@ def build(message, separator=field_separator):
 
     if DEBUG:
         print "built: %s" % __str__(message)
-    return separator.join([message.typ, ] + \
+    return separator.join([message.typ, ] +
             list(str(x) for x in message.fields)) + message_separator
 
 

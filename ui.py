@@ -6,7 +6,8 @@ from gevent import monkey
 from gevent import Greenlet
 
 import settings
-from peerlist import peerlist, findpeer, share_file, share_files_from_folder, PeerNotFoundException
+from peerlist import peerlist, findpeer, share_file, share_files_from_folder
+from peerlist import PeerNotFoundException
 from message import HiMessage
 from connection import get_file_list, get_file
 import datagram
@@ -80,12 +81,14 @@ def run_ui():
                     newly_shared = share_file(scmd[1])
                     for f in newly_shared:
                         print("added to share: " + f.name)
-                        datagram.send_file_announcement_message_to_multicast_group(f)
+                        datagram \
+                        .send_file_announcement_message_to_multicast_group(f)
                 except EOFError:
                     print("No such file or directory " + scmd[1])
             elif cmd == "announce all":
                 for f in peerlist.self_peer.files:
-                    datagram.send_file_announcement_message_to_multicast_group(f)
+                    datagram \
+                    .send_file_announcement_message_to_multicast_group(f)
             elif cmd.startswith("announce "):
                 matching_files = filter(lambda f: (scmd[1] in f.sha_hash
                     or scmd[1] in f.name), peerlist.self_peer.files)
