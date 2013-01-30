@@ -40,17 +40,20 @@ def run_ui():
             elif cmd == "self":
                 print(peerlist.self_peer)
             elif cmd.startswith("list files ") and len(scmd) >= 3:
-                peer = findpeer(' '.join(scmd[2:]))
-                print("Peer {alias} has {numfiles} files:".format(
-                    alias=peer.alias,
-                    numfiles=len(peer.files)
-                    ))
-                for f in peer.files:
-                    print("{name} {length} {sha_hash}".format(
-                        name=f.name,
-                        length=f.length,
-                        sha_hash=f.sha_hash
+                try:
+                    peer = findpeer(' '.join(scmd[2:]))
+                    print("Peer {alias} has {numfiles} files:".format(
+                        alias=peer.alias,
+                        numfiles=len(peer.files)
                         ))
+                    for f in peer.files:
+                        print("{name} {length} {sha_hash}".format(
+                            name=f.name,
+                            length=f.length,
+                            sha_hash=f.sha_hash
+                            ))
+                except NameError as e:
+                    print(e)
             elif cmd.startswith("get filelist ") and len(scmd) >= 3:
                 peer = findpeer(' '.join(scmd[2:]))
                 get_filelist_task = Greenlet.spawn(get_file_list, peer)

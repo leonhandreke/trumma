@@ -5,7 +5,7 @@ UDP_PORT = 4747
 TCP_PORT = 4747
 
 LOOPBACK_IP_ADDRESS = "127.0.0.1"
-OWN_IP_ADDRESSES = [] #socket.gethostbyname(socket.gethostname())
+OWN_IP_ADDRESSES = ['172.20.42.104', '2001:7c0:409:8001:221:ccff:fec4:25f0']  # socket.gethostbyname(socket.gethostname())
 IPV4_BIND_INTERFACE = ''
 IPV6_BIND_INTERFACE = ''
 IPV4_MULTICAST_GROUP = "239.255.0.113"
