@@ -80,10 +80,9 @@ class AvailableFile(object):
 
 
 def findpeer(query):
-    peer = find_peer_by_name(query)
-    if peer:
-        return peer
-    else:
+    try:
+        return find_peer_by_name(query)
+    except PeerNotFoundException:
         return find_peer_by_address(query)
 
 
