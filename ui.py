@@ -6,7 +6,7 @@ from gevent import monkey
 from gevent import Greenlet
 
 import settings
-from peerlist import peerlist, findpeer, share_file, share_files_from_folder
+from peerlist import peerlist, findpeer, share_file, share_files_from_folder, PeerNotFoundException
 from message import HiMessage
 from connection import get_file_list, get_file
 import datagram
@@ -107,3 +107,5 @@ def run_ui():
                 print("No such command - type help to get a list of commands")
         except EOFError:
             break
+        except PeerNotFoundException, e:
+            print(e)

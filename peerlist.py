@@ -93,9 +93,9 @@ def find_peer_by_name(query):
         if peer.alias == query:
             peers.append(peer)
     if len(peers) > 1:
-        raise NameError("More than one peer in the peerlist with the alias given!")
+        raise PeerNotFoundException("More than one peer in the peerlist with the alias given!")
     elif len(peers) == 0:
-        raise NameError("No peer in the peerlist with the alias given!")
+        raise PeerNotFoundException("No peer in the peerlist with the alias given!")
     else:
         return(peers[0])
 
@@ -106,12 +106,14 @@ def find_peer_by_address(query):
         if peer.address == query:
             peers.append(peer)
     if len(peers) > 1:
-        NameError("More than one peer in the peerlist with the address given!")
+        PeerNotFoundException("More than one peer in the peerlist with the address given!")
     elif len(peers) == 0:
-        NameError("No peer in the peerlist with the address given!")
+        PeerNotFoundException("No peer in the peerlist with the address given!")
     else:
         return(peers[0])
 
+class PeerNotFoundException(Exception):
+    pass
 
 def share_files_from_folder(folder):
     shared = []
