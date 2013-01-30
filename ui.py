@@ -55,28 +55,22 @@ def run_ui():
                 except NameError as e:
                     print(e)
             elif cmd.startswith("get filelist ") and len(scmd) >= 3:
-                try:
-                    peer = findpeer(' '.join(scmd[2:]))
-                    get_filelist_task = Greenlet.spawn(get_file_list, peer)
-                    get_filelist_task.join()
-                except NameError as e:
-                    print(e)
+                peer = findpeer(' '.join(scmd[2:]))
+                get_filelist_task = Greenlet.spawn(get_file_list, peer)
+                get_filelist_task.join()
             elif cmd.startswith("get file ") and len(scmd) == 4:
-                try:
-                    peer = findpeer(' '.join(scmd[3:]))
-                    matching_files = filter(lambda f: (scmd[2] in f.sha_hash or
-                        scmd[2] in f.name), peer.files)
-                    if len(matching_files) > 1:
-                        raise UserInputException("Multiple matching files")
-                    elif len(matching_files) == 0:
-                        raise UserInputException("No matching file")
-                    else:
-                        download_task = Greenlet.spawn(get_file, peer,
-                            matching_files[0])
-                        # wait until completion
-                        download_task.join()
-                except NameError as e:
-                    print(e)
+                peer = findpeer(' '.join(scmd[3:]))
+                matching_files = filter(lambda f: (scmd[2] in f.sha_hash or
+                    scmd[2] in f.name), peer.files)
+                if len(matching_files) > 1:
+                    raise UserInputException("Multiple matching files")
+                elif len(matching_files) == 0:
+                    raise UserInputException("No matching file")
+                else:
+                    download_task = Greenlet.spawn(get_file, peer,
+                        matching_files[0])
+                    # wait until completion
+                    download_task.join()
             elif cmd.startswith("find peers"):
                 datagram.send_hi_message_to_multicast_group()
                 print("finding peers … please check peerlist to " +
