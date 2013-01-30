@@ -24,7 +24,7 @@ def handle_connection(conn, addr):
         return
     if isinstance(message, GetFilelistMessage):
         for f in peerlist.self_peer.files:
-            m = FileMessage(f.sha_hash,
+            m = FileMessage(f.sha_hash.lower(),
                     -1 if f.ttl == float("inf") else f.ttl,
                     f.length,
                     f.name,
@@ -56,6 +56,7 @@ def handle_connection(conn, addr):
             else:
                 conn.close()
                 return
+    conn.close()
 
 
 def get_file_list(peer):
@@ -97,6 +98,7 @@ def get_file(peer, f):
             message = parser.parse(message_data)
             if message.status != FileTransferResponseMessage.OK_STATUS:
                 print("File Request denied by peer.")
+                sock.close()
                 return
             else:
                 break
