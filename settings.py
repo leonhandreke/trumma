@@ -4,7 +4,8 @@ import socket
 UDP_PORT = 4747
 TCP_PORT = 4747
 
-OWN_IP = socket.gethostbyname(socket.gethostname())
+LOOPBACK_IP_ADDRESS = "127.0.0.1"
+OWN_IP_ADDRESSES = [] #socket.gethostbyname(socket.gethostname())
 IPV4_BIND_INTERFACE = ''
 IPV6_BIND_INTERFACE = ''
 IPV4_MULTICAST_GROUP = "239.255.0.113"

@@ -53,7 +53,7 @@ class TrummaDatagramServer(DatagramServer):
             peer.last_seen = datetime.now()
 
         # prepare a yo, but only if the hi did not come from myself
-        if address != settings.OWN_IP:
+        if address not in settings.OWN_IP_ADDRESSES:
             yo = YoMessage(peerlist.self_peer.tcp_port,
                 peerlist.self_peer.alias)
             self.send_message_to_multicast_group(yo)

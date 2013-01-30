@@ -17,7 +17,7 @@ from ui import run_ui
 from peerlist import Peer, AvailableFile, share_files_from_folder
 from peerlist import decrement_other_peers_files_ttl, peerlist
 
-peerlist.self_peer = Peer(settings.OWN_IP)
+peerlist.self_peer = Peer(settings.LOOPBACK_IP_ADDRESS)
 peerlist.self_peer.tcp_port = settings.TCP_PORT
 peerlist.self_peer.alias = settings.ALIAS
 peerlist.append(peerlist.self_peer)
