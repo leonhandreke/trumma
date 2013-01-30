@@ -73,7 +73,8 @@ def get_file_list(peer):
     sock.close()
 
 def get_file(peer, f):
-    f.local_path = os.path.join(settings.DOWNLOAD_PATH, f.name)
+    f.local_path = os.path.join(settings.DOWNLOAD_PATH, os.path.split(f.name)[1])
+    print "Downloading to " + f.local_path
     if os.path.exists(f.local_path):
         print("File {filename} already exists.".format(filename=f.name))
         return
