@@ -24,7 +24,7 @@ class PeerList(list):
 
         # if the file was deleted
         if f.ttl == 0:
-            sender.files.remove(f)
+            sender_peer.files.remove(f)
 
 
 peerlist = PeerList()
