@@ -2,6 +2,7 @@ from datetime import datetime
 
 from gevent.server import DatagramServer
 from peerlist import Peer, peerlist, findpeer, find_peer_by_address
+from peerlist import PeerNotFoundException
 from message import create_message, HiMessage, YoMessage, ByeMessage
 from message import FileMessage
 import settings
