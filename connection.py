@@ -43,19 +43,28 @@ def handle_connection(conn, addr):
                 ))
             conn.close()
             return
+
+        if message.offset + message.length > file_to_send.length:
+            conn.sendall(parser.build(
+                FileTransferResponseMessage(
+                    FileTransferResponseMessage.NEVER_TRY_AGAIN_STATUS,
+                    0)
+                ))
+            conn.close()
+            return
+
         conn.sendall(parser.build(
             FileTransferResponseMessage(FileTransferResponseMessage
-                .OK_STATUS, 0)
+                .OK_STATUS, message.length)
             ))
 
         f = open(file_to_send.local_path)
-        while True:
-            data_to_send = f.read(1024)
-            if data_to_send:
-                conn.sendall(data_to_send)
-            else:
-                conn.close()
-                return
+        f.seek(message.offset)
+        length_remaining_to_send = message.length
+        while length_remaining_to_send > 0:
+            length_to_send = min(length_remaining_to_send, 4096)
+            length_remaining_to_send -= length_to_send
+            conn.sendall(f.read(length_to_send))
     conn.close()
 
 
