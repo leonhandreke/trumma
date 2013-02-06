@@ -34,7 +34,7 @@ def handle_connection(conn, addr):
         return
     elif isinstance(message, GetFileMessage):
         try:
-            file_to_send = filter(lambda f: f.sha_hash == message.sha,
+            file_to_send = filter(lambda f: f.sha_hash == message.sha.lower(),
                 peerlist.self_peer.files)[0]
         except:
             conn.sendall(parser.build(

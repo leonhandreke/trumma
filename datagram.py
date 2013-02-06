@@ -49,8 +49,9 @@ class TrummaDatagramServer(DatagramServer):
 
     def handle_hi_message(self, message, address):
         # insert the new peer into our peerlist
-        peer = find_peer_by_address(address)
-        if peer not in peerlist:
+        try:
+            peer = find_peer_by_address(address)
+        except PeerNotFoundException:
             new_peer = Peer(address)
             new_peer.tcp_port = message.port
             new_peer.alias = message.username
@@ -66,8 +67,9 @@ class TrummaDatagramServer(DatagramServer):
 
     def handle_yo_message(self, message, address):
         # insert the new peer into our peerlist
-        peer = find_peer_by_address(address)
-        if peer not in peerlist:
+        try:
+            peer = find_peer_by_address(address)
+        except PeerNotFoundException:
             new_peer = Peer(address)
             new_peer.tcp_port = message.port
             new_peer.alias = message.username
@@ -76,13 +78,18 @@ class TrummaDatagramServer(DatagramServer):
             peer.last_seen = datetime.now()
 
     def handle_bye_message(self, message, address):
-        peer = find_peer_by_address(address)
-        if peer in peerlist:
+        try:
+            peer = find_peer_by_address(address)
             peerlist.remove(peer)
+        except PeerNotFoundException:
+            return
 
     def handle_file_message(self, message, address):
-        peer = find_peer_by_address(address)
-        peerlist.update_with_file_announcement_message(message, peer)
+        try:
+            peer = find_peer_by_address(address)
+            peerlist.update_with_file_announcement_message(message, peer)
+        except PeerNotFoundException:
+            return
 
     def send_message_to_multicast_group(self, message):
         data = message.data

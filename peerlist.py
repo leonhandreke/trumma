@@ -104,7 +104,7 @@ def find_peer_by_address(query):
         if peer.address == query:
             peers.append(peer)
     if len(peers) == 0:
-        PeerNotFoundException(
+        raise PeerNotFoundException(
             "No peer in the peerlist with the address given!")
     else:
         return(peers[0])
