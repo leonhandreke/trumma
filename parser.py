@@ -108,7 +108,10 @@ def parse(data):
     If no Message object can be constructed from the given input data,
     None is returned.
     """
-    return _parseType(data)
+    message = _parseType(data)
+    if DEBUG:
+        print "parsed: %s" % __str__(message)
+    return message
 
 
 def build(message, separator=field_separator):
