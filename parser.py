@@ -3,31 +3,31 @@
 """
 >>> import parser
 
->>> o = parser.parse(u"Hi\u001f123\u001fKev")
+>>> o = parser.parse(u"HI\u001f123\u001fKev")
 >>> print(o)
-Hi|123|Kev
+HI|123|Kev
 >>> o.port
 123
 >>> o.username
 u'Kev'
 >>> o.typ
-'Hi'
+'HI'
 >>> o.fields
 [123, u'Kev']
 
 
->>> o = parser.parse(u"Bye")
+>>> o = parser.parse(u"BYE")
 >>> print o
-Bye
+BYE
 >>> o.typ
-'Bye'
+'BYE'
 
 
 
->>> o = parser.parse(u"File\u001f526b11399df02e253c502a8067eabea17bfae8a8\
+>>> o = parser.parse(u"FILE\u001f526b11399df02e253c502a8067eabea17bfae8a8\
 \u001f-1\u001f3\u001fKev\u001fKev")
 >>> print o
-File|526b11399df02e253c502a8067eabea17bfae8a8|-1|3|Kev|Kev
+FILE|526b11399df02e253c502a8067eabea17bfae8a8|-1|3|Kev|Kev
 >>> o.sha
 u'526b11399df02e253c502a8067eabea17bfae8a8'
 >>> print o.ttl

@@ -4,10 +4,10 @@
 >>> import message
 >>> o = message.HiMessage(123, "Kev")
 >>> print o
-Hi|123|Kev
+HI|123|Kev
 >>> i = message.create_message(o.data)
 >>> print i
-Hi|123|Kev
+HI|123|Kev
 >>> i.username
 u'Kev'
 >>> i.port
